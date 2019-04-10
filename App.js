@@ -17,6 +17,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HomeScreen from "./src/screens/homeScreen";
+import TimeTableScreen from "./src/screens/TimeTableScreen";
 import ProfileScreen from "./src/screens/profileScreen";
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
@@ -26,7 +27,7 @@ import ResetPasswordScreen from "./src/screens/Auth/ResetPassword";
 const AppTabNavigator = createBottomTabNavigator(
   {
     Home: { screen: HomeScreen },
-    TimeTable: { screen: HomeScreen },
+    TimeTable: { screen: TimeTableScreen },
     Analysis: { screen: HomeScreen },
     Channels: { screen: HomeScreen },
     Profile: { screen: ProfileScreen }
