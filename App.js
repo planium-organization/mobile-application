@@ -88,7 +88,7 @@ const AppMainSwitch = createSwitchNavigator(
     Auth: AppAuthNavigator
   },
   {
-    initialRouteName: "AuthLoading"
+    initialRouteName: "App"
   }
 );
 
