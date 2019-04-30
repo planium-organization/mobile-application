@@ -1,20 +1,32 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, Button } from "react-native";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 import TimeTableEntity from "../Components/TimeTableEntity";
-import { addCard, selectCard, deselectCard, deleteCard } from '../store/CardsActions';
+import {
+  addCard,
+  selectCard,
+  deselectCard,
+  deleteCard
+} from "../store/CardsActions";
 
 class TimeTableScreen extends Component {
+  addCard() {
+    this.props.addCard("todo", "physics", 120, new Date());
+  }
+
   render() {
-    this.state.onAddCard("todo", "physics", 120, new Date());
+    console.log("test");
     return (
       <View style={styles.main}>
-        <Text>{this.state.cards.cards.length}</Text>
-        {/* <TimeTableEntity styles={styles.timeTableEntity} /> */}
-        {/* <TimeTableEntity styles={styles.timeTableEntity} /> */}
-        {/* <TimeTableEntity styles={styles.timeTableEntity} /> */}
-        {/* <TimeTableEntity styles={styles.timeTableEntity} /> */}
+        <Text>{this.props.cards.length}</Text>
+        <Button
+          title="CLICK ME!"
+          onPress={() => {
+            this.addCard();
+          }}
+        />
         {/* <TimeTableEntity styles={styles.timeTableEntity} /> */}
       </View>
     );
@@ -31,7 +43,6 @@ const styles = StyleSheet.create({
   }
 });
 
-
 const mapStateToProps = state => {
   return {
     cards: state.cards.cards,
@@ -39,16 +50,30 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onAddCard: (cType, cCourse, cDuration, cStartTime) => {
-      return dispatch(addCard(cType, cCourse, cDuration, cStartTime))
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onAddCard: (cType, cCourse, cDuration, cStartTime) => {
+//       return dispatch(addCard(cType, cCourse, cDuration, cStartTime))
+//     },
+//     onDeleteCard: () => dispatch(deleteCard()),
+//     onSelectCard: key => dispatch(selectCard(key)),
+//     onDeselectCard: () => dispatch(deselectCard())
+//   };
+// };
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      addCard,
+      deleteCard,
+      selectCard,
+      deselectCard
     },
-    onDeleteCard: () => dispatch(deleteCard()),
-    onSelectCard: key => dispatch(selectCard(key)),
-    onDeselectCard: () => dispatch(deselectCard())
-  };
-};
+    dispatch
+  );
 
 // export default TimeTableScreen;
-export default connect(mapStateToProps, mapDispatchToProps)(TimeTableScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TimeTableScreen);
