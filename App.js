@@ -1,7 +1,7 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- *
+ *   
  * @format
  * @flow
  */
@@ -13,7 +13,7 @@ import {
   createAppContainer,
   createBottomTabNavigator,
   createSwitchNavigator
-} from "react-navigation";
+} from "react-navigation"; 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HomeScreen from "./src/screens/homeScreen";
@@ -24,13 +24,12 @@ import LoadingScreen from "./src/screens/Auth/Loading";
 import SignUpScreen from "./src/screens/Auth/SignUp";
 import ResetPasswordScreen from "./src/screens/Auth/ResetPassword";
 
+
 const AppTabNavigator = createBottomTabNavigator(
   {
-    Home: { screen: HomeScreen },
     TimeTable: { screen: TimeTableScreen },
     Analysis: { screen: HomeScreen },
     Channels: { screen: HomeScreen },
-    Profile: { screen: ProfileScreen }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -38,10 +37,7 @@ const AppTabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-          case "Home": {
-            iconName = "calendar-multiple-check";
-            break;
-          }
+         
           case "TimeTable": {
             iconName = "timetable";
             break;
@@ -54,10 +50,7 @@ const AppTabNavigator = createBottomTabNavigator(
             iconName = "forum";
             break;
           }
-          case "Profile": {
-            iconName = "account-settings";
-            break;
-          }
+        
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -81,6 +74,7 @@ const AppAuthNavigator = createStackNavigator(
   }
 );
 
+//TODO: fix init routname 
 const AppMainSwitch = createSwitchNavigator(
   {
     AuthLoading: LoadingScreen,

@@ -1,27 +1,28 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { ScrollView } from "react-native-gesture-handler";
 
 class TimeTableEntity extends Component {
   render() {
     return (
-      <View style={styles.mainView}>
-        <View style={{flex: 1,margin: 5}}>
-          <Image
-            style={styles.entityIcon}
-            source={require("../res/images/physics.png")}
-          />
+        <View style={styles.mainView}>
+          <View style={{flex: 1,margin: 5}}>
+            <Image
+              style={styles.entityIcon}
+              source={require("../res/images/physics.png")}
+            />
+          </View>
+          <View style={styles.entityDesc}>
+            <Text style={styles.textTile}>Social Media</Text>
+            <Text style={styles.textTimeSpan}>11:26 AM - 13:15 PM</Text>
+            <Text style={styles.textDesc}>2 comments (1 unread)</Text>
+          </View>
+          <View style={styles.entityDuration}>
+            <Text>1 h</Text>
+            <Text>18 min</Text>
+          </View>
         </View>
-        <View style={styles.entityDesc}>
-          <Text style={styles.textTile}>Social Media</Text>
-          <Text style={styles.textTimeSpan}>11:26 AM - 13:15 PM</Text>
-          <Text style={styles.textDesc}>2 comments (1 unread)</Text>
-        </View>
-        <View style={styles.entityDuration}>
-          <Text>1 h</Text>
-          <Text>18 min</Text>
-        </View>
-      </View>
     );
   }
 }
