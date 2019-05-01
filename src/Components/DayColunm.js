@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import Card from './Card';
 
-class TimeTableEntity extends Component {
+class DayColumn extends Component {
     render() {
         return (
-            <View>
-                <Text>Card1</Text>
+            <View style={styles.DayColumnStyle}>
+                {/* <Text>{this.props.name}</Text> */}
+                {/* card component */}
+                {this.props.allCards.map((val)=>{
+                    return(
+                        <Card card={val}/>
+                    )
+                })}
             </View>
             
         );
@@ -13,11 +20,16 @@ class TimeTableEntity extends Component {
 }
 
 const styles = StyleSheet.create({
-    DayColumnStule: {
+    DayColumnStyle: {
         borderColor: '#8f8f8f',
         borderLeftWidth: 1,
+        borderRightWidth: 1,
         paddingTop: 5,
+        // width: '33%'
+        flex: 1
 
 
     }
 })
+
+export default DayColumn;

@@ -5,15 +5,18 @@ import { bindActionCreators } from "redux";
 
 import { View, StyleSheet , Text} from "react-native";
 import TimeTableEntity from "../Components/TimeTableEntity";
+import DayColumn from './../Components/DayColunm';
 import { ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import { addCard, selectCard, deselectCard, deleteCard } from '../store/CardsActions';
+import Card from "../Components/Card";
 import {
   addCard,
   selectCard,
   deselectCard,
   deleteCard
 } from "../store/CardsActions";
+
 
 
 class TimeTableScreen extends Component {
@@ -43,17 +46,14 @@ class TimeTableScreen extends Component {
           <ScrollView style={{height: '100%'}}>
             <View style={styles.DayColumnScroll}>
               {/* columns */}
-              <View style={{ flex: 1, borderWidth: 1}}> 
-                <Text>card1</Text>
-              </View>
+              <DayColumn name={'sdgfd'} allCards={[card2, card1,card3,card1]}/>
+             
 
-              <View style={{ flex: 1, borderWidth: 1 }}>
-                <Text>card</Text>
-              </View>
+              <DayColumn name={'name2'} allCards={[card1, card3, card2, card1, card3]}/>
+            
 
-              <View style={{ flex: 1, borderWidth:1 }}>
-                <Text>card</Text>
-              </View>  
+              <DayColumn name={'name3'} allCards={[card2, card3, card1]}/>
+                
               
             </View>
           </ScrollView>
@@ -70,7 +70,21 @@ class TimeTableScreen extends Component {
     );
   }
 }
-
+var card1 = {
+  name:'Physics',
+  height: 100,
+  color: 'red'
+};
+var card2 = {
+  name: 'Biology',
+  height: 130,
+  color: 'green'
+};
+var card3 = {
+  name: 'Math',
+  height: 80,
+  color: '#a3523f'
+}
 const styles = StyleSheet.create({
   ColumnCapitalBox: {
     padding: 2,
@@ -94,10 +108,10 @@ const styles = StyleSheet.create({
   DayColumnScroll: {
     height: 800,
     borderBottomWidth: 1,
-    paddingTop: 10,
+    // paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'stretch',
+    // alignItems: 'stretch',
   },
     main: {
         flexDirection: 'column',
