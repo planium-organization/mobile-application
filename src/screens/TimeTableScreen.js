@@ -1,12 +1,18 @@
 import React, { Component } from "react";
+
 import { View, StyleSheet , Text} from "react-native";
 import TimeTableEntity from "../Components/TimeTableEntity";
 import { ScrollView } from "react-native-gesture-handler";
+import { connect } from "react-redux";
+import { addCard, selectCard, deselectCard, deleteCard } from '../store/CardsActions';
+
 
 class TimeTableScreen extends Component {
   render() {
+    this.state.onAddCard("todo", "physics", 120, new Date());
     return (
       <View style={styles.main}>
+
 
         {/* Column Capital */}
         <View style={styles.ColumnCapital}>
@@ -83,6 +89,27 @@ const styles = StyleSheet.create({
     timeTableEntity: {
         // height: 60
     }
+
 });
 
-export default TimeTableScreen;
+
+const mapStateToProps = state => {
+  return {
+    cards: state.cards.cards,
+    selectedCard: state.cards.selectedCard
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddCard: (cType, cCourse, cDuration, cStartTime) => {
+      return dispatch(addCard(cType, cCourse, cDuration, cStartTime))
+    },
+    onDeleteCard: () => dispatch(deleteCard()),
+    onSelectCard: key => dispatch(selectCard(key)),
+    onDeselectCard: () => dispatch(deselectCard())
+  };
+};
+
+// export default TimeTableScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(TimeTableScreen);
