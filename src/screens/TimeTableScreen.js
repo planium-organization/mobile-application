@@ -13,7 +13,7 @@ class TimeTableScreen extends Component {
           <View style={styles.ColumnCapitalBox}>
             <Text style={{ textAlign: 'center', textAlignVertical:'center'}}>Yesterday</Text>
           </View>
-          <View style={styles.ColumnCapitalBox}>
+          <View style={[styles.ColumnCapitalBox, { borderLeftWidth: 1, borderRightWidth: 1}]}>
             <Text style={{ textAlign: 'center', textAlignVertical: 'center' }}>Today</Text>
           </View>
           <View style={styles.ColumnCapitalBox}>
@@ -26,15 +26,15 @@ class TimeTableScreen extends Component {
           <ScrollView style={{height: '100%'}}>
             <View style={styles.DayColumnScroll}>
               {/* columns */}
-              <View style={{ flex: 1, borderWidth: 2}}> 
+              <View style={{ flex: 1, borderWidth: 1}}> 
                 <Text>card1</Text>
               </View>
 
-              <View style={{ flex: 1, borderWidth: 2 }}>
+              <View style={{ flex: 1, borderWidth: 1 }}>
                 <Text>card</Text>
               </View>
 
-              <View style={{ flex: 1, borderWidth:2 }}>
+              <View style={{ flex: 1, borderWidth:1 }}>
                 <Text>card</Text>
               </View>  
               
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   ColumnCapitalBox: {
     padding: 2,
     paddingLeft: 2,
-    borderLeftWidth: 1,
+    //borderLeftWidth: 1,
     paddingTop: 10,
     paddingBottom: 10,
     flex: 1,
@@ -61,14 +61,14 @@ const styles = StyleSheet.create({
   ColumnCapital: {
     borderWidth: 1,
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 5,
     height: 70,
     flexDirection: 'row',
     justifyContent: 'center',
   },
   DayColumnScroll: {
-    height: 400,
-    borderBottomWidth: 4,
+    height: 800,
+    borderBottomWidth: 1,
     paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
