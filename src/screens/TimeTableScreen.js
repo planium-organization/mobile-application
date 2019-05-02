@@ -13,13 +13,19 @@ import {
 } from "../store/CardsActions";
 
 
+const dateToDayString = date => {
+  return date.getYear().toString();
+};
+
+
 class TimeTableScreen extends Component {
   addCard() {
     this.props.addCard("todo", "physics", 120, new Date());
   }
 
   render() {
-    console.log("test");
+    console.log(this.props.cards);
+
     return (
       <View style={styles.main}>
         {/* Column Capital */}
@@ -49,20 +55,6 @@ class TimeTableScreen extends Component {
         {/* Day columns */}
         <View style={{ flex: 1 }}>
           <ScrollView style={{ height: "100%" }}>
-            <View style={styles.DayColumnScroll}>
-              {/* columns */}
-              <View style={{ flex: 1, borderWidth: 1 }}>
-                <Text>card1</Text>
-              </View>
-
-              <View style={{ flex: 1, borderWidth: 1 }}>
-                <Text>card</Text>
-              </View>
-
-              <View style={{ flex: 1, borderWidth: 1 }}>
-                <Text>card</Text>
-              </View>
-            </View>
           </ScrollView>
         </View>
       </View>
