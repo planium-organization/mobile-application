@@ -1,66 +1,97 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableNativeFeedback
+} from "react-native";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import {
+  addCard,
+  selectCard,
+  deselectCard,
+  deleteCard
+} from "../store/CardsActions";
 
 class Card extends Component {
-    render() {
-        const cardOnLoadProps = StyleSheet.create({ 
-            HeightOnLoad: { 
-                height: this.props.card.height,
-            },
-            ColorOnLoad: {
-                backgroundColor: this.props.card.color, 
-            }
-        });
-        return (
-            <View style={[styles.Main, cardOnLoadProps.HeightOnLoad]}>
-                {/* <View style={[cardHeight.CardTextHeight , styles.CardStyle]}> */}
-                    {/* card component */}
-                    <View style={{flex:1,padding:4}}>
-                        <View style={[{ flex:1, borderRadius:8,  }, cardOnLoadProps.ColorOnLoad]}/>
-                    </View>
-                    <Text style={{ textAlign: 'center', textAlignVertical: 'center', flex:11 }}>{this.props.card.name}</Text>
-                {/* </View> */}
-            </View>
-        );
-    }
+  onPressHnd() {
+    // navigate to card edit page
+    console.log(this.props.navigation);
+    this.props.selectCard(this.props.card);
+    this.props.navigation.push("CardEdit");
+  }
+
+  onHoldHnd() {
+    // mark card as done
+  }
+
+  render() {
+    const cardOnLoadProps = StyleSheet.create({
+      HeightOnLoad: {
+        height: this.props.card.duration
+      },
+      ColorOnLoad: {
+        width: 6,
+        borderRadius: 3,
+        margin: 4,
+        backgroundColor: this.props.card.color
+      }
+    });
+    return (
+      <TouchableNativeFeedback
+        onPress={() => this.onPressHnd()}
+        onLongPress={() => this.onHoldHnd()}
+      >
+        <View style={[styles.Main, cardOnLoadProps.HeightOnLoad]}>
+          <View style={cardOnLoadProps.ColorOnLoad} />
+          <Text style={styles.CardMainText}>{this.props.card.course}</Text>
+        </View>
+      </TouchableNativeFeedback>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    Main: { 
-        height: 100, 
-        alignSelf: "stretch", 
-        borderWidth: 1, 
-        borderColor: "#8f8f8f", 
-        margin: 3, 
-        borderBottomStartRadius: 5,
-        borderBottomEndRadius: 5,
-        borderTopEndRadius: 5,
-        flexDirection: 'row',
+  Main: {
+    alignSelf: "stretch",
+    borderWidth: 1,
+    borderColor: "#8f8f8f",
+    margin: 3,
+    borderBottomStartRadius: 5,
+    borderBottomEndRadius: 5,
+    borderTopEndRadius: 5,
+    flexDirection: "row"
+  },
+  CardMainText: {
+    textAlign: "center",
+    textAlignVertical: "center",
+    flex: 1
+  }
+});
 
+const mapStateToProps = state => {
+  return {
+    cards: state.cards.cards,
+    selectedCard: state.cards.selectedCard
+  };
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      addCard,
+      deleteCard,
+      selectCard,
+      deselectCard
     },
-    CardStyle: {
-        //paddingBottom: 5,
-        //paddingLeft: 2,
-        //paddingRight: 2,
-         
-        //paddingTop: 5,
-        //marginBottom: 5,
-        //marginLeft: 2,
-        //marginRight: 2,
-        //width: '100%',
-        //padding:2,
-        flex:1        
-    },
-    // MainStyle: {
-    //     paddingLeft: 2,
-    //     paddingRight: 2,
-    //     paddingTop: 5,
-    //     paddingBottom: 5,
-    //     height: 80,
-    //     //borderWidth: 1,
-    //     //borderColor: 'red'
+    dispatch
+  );
 
-//    },
-})
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card);
 
-export default Card;
+// export default Card;

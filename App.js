@@ -1,7 +1,7 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
- *   
+ *
  * @format
  * @flow
  */
@@ -13,23 +13,33 @@ import {
   createAppContainer,
   createBottomTabNavigator,
   createSwitchNavigator
-} from "react-navigation"; 
+} from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HomeScreen from "./src/screens/homeScreen";
 import TimeTableScreen from "./src/screens/TimeTableScreen";
 import ProfileScreen from "./src/screens/profileScreen";
+import CardEditScreen from "./src/screens/CardEditScreen";
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
 import SignUpScreen from "./src/screens/Auth/SignUp";
 import ResetPasswordScreen from "./src/screens/Auth/ResetPassword";
 
+const TimeTableNavigator = createStackNavigator(
+  {
+    TimeTable: { screen: TimeTableScreen },
+    CardEdit: { screen: CardEditScreen }
+  },
+  {
+    initialRouteName: "TimeTable"
+  }
+);
 
 const AppTabNavigator = createBottomTabNavigator(
   {
-    TimeTable: { screen: TimeTableScreen },
+    TimeTable: TimeTableNavigator ,
     Analysis: { screen: HomeScreen },
-    Channels: { screen: HomeScreen },
+    Channels: { screen: HomeScreen }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -37,7 +47,6 @@ const AppTabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
-         
           case "TimeTable": {
             iconName = "timetable";
             break;
@@ -50,7 +59,6 @@ const AppTabNavigator = createBottomTabNavigator(
             iconName = "forum";
             break;
           }
-        
         }
 
         return <Icon name={iconName} size={25} color={tintColor} />;
@@ -74,7 +82,7 @@ const AppAuthNavigator = createStackNavigator(
   }
 );
 
-//TODO: fix init routname 
+//TODO: fix init routname
 const AppMainSwitch = createSwitchNavigator(
   {
     AuthLoading: LoadingScreen,

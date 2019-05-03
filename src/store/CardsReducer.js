@@ -6,7 +6,38 @@ import {
 } from "./ActionTypes";
 
 const initialState = {
-  cards: {"2019": []},
+  cards: {
+    day1: [
+      {
+        key: Math.random(),
+        type: "todo",
+        course: "Maths",
+        color: "#273baa",
+        duration: 75,
+        startTime: null
+      }
+    ],
+    day2: [
+      {
+        key: Math.random(),
+        type: "todo",
+        course: "Physics",
+        color: "#c12828",
+        duration: 120,
+        startTime: null
+      }
+    ],
+    day3: [
+      {
+        key: Math.random(),
+        type: "todo",
+        course: "Physics",
+        color: "#c12828",
+        duration: 120,
+        startTime: null
+      }
+    ]
+  },
   selectedCard: null
 };
 
@@ -23,6 +54,7 @@ const reducer = (state = initialState, action) => {
           key: Math.random(),
           type: action.cardType,
           course: action.cardCourse,
+          color: "#c12828",
           duration: action.cardDuration,
           startTime: action.cardStartTime
         })
@@ -38,9 +70,7 @@ const reducer = (state = initialState, action) => {
     case SELECT_CARD:
       return {
         ...state,
-        selectedCard: state.cards.find(card => {
-          return card.key === action.key;
-        })
+        selectedCard: action.cardKey
       };
     case DESELECT_CARD:
       return {
