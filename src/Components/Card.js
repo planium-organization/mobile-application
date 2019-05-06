@@ -18,7 +18,7 @@ import {
 class Card extends Component {
   onPressHnd() {
     // navigate to card edit page
-    console.log(this.props.navigation);
+    // console.log(this.props.card);
     this.props.selectCard(this.props.card);
     this.props.navigation.push("CardEdit");
   }

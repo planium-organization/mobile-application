@@ -7,7 +7,6 @@ const rootReducer = combineReducers({
 });
 
 const configureStore = () => {
-    // console.log("here");
     return createStore(rootReducer);
 };
 

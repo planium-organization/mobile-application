@@ -1,5 +1,6 @@
 import {
   ADD_CARD,
+  EDIT_CARD,
   DELETE_CARD,
   SELECT_CARD,
   DESELECT_CARD
@@ -14,7 +15,7 @@ const initialState = {
         course: "Maths",
         color: "#273baa",
         duration: 75,
-        startTime: null
+        startTime: { hour: 0, minute: 12 }
       }
     ],
     day2: [
@@ -59,6 +60,10 @@ const reducer = (state = initialState, action) => {
           startTime: action.cardStartTime
         })
       };
+    case EDIT_CARD:
+      return {
+        ...state
+      };
     case DELETE_CARD:
       return {
         ...state,
@@ -70,7 +75,7 @@ const reducer = (state = initialState, action) => {
     case SELECT_CARD:
       return {
         ...state,
-        selectedCard: action.cardKey
+        selectedCard: action.cardData
       };
     case DESELECT_CARD:
       return {
