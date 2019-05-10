@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableNativeFeedback
 } from "react-native";
 import { connect } from "react-redux";
@@ -18,7 +17,7 @@ import {
 class Card extends Component {
   onPressHnd() {
     // navigate to card edit page
-    this.props.selectCard(this.props.cardKey);
+    this.props.selectCard(this.props.cardItem);
     this.props.navigation.push("CardEdit");
   }
 
@@ -26,22 +25,16 @@ class Card extends Component {
     // mark card as done
   }
 
-  componentWillMount() {
-    this.currentCard = this.props.cards.find(
-      cardItem => cardItem.key === this.props.cardKey
-    );
-  }
-
   render() {
     const cardOnLoadProps = StyleSheet.create({
       HeightOnLoad: {
-        height: this.currentCard.duration
+        height: this.props.cardItem.duration
       },
       ColorOnLoad: {
         width: 6,
         borderRadius: 3,
         margin: 4,
-        backgroundColor: this.currentCard.color
+        backgroundColor: this.props.cardItem.color
       }
     });
     return (
@@ -51,7 +44,7 @@ class Card extends Component {
       >
         <View style={[styles.Main, cardOnLoadProps.HeightOnLoad]}>
           <View style={cardOnLoadProps.ColorOnLoad} />
-          <Text style={styles.CardMainText}>{this.currentCard.course}</Text>
+          <Text style={styles.CardMainText}>{this.props.cardItem.course}</Text>
         </View>
       </TouchableNativeFeedback>
     );

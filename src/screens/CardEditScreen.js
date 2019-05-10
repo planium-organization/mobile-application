@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, View, Text, Picker, TimePickerAndroid } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -13,25 +12,11 @@ import {
 
 class CardEditScreen extends Component {
   static navigationOptions = {
-    headerTitle: <Text>Edit To-Do Card</Text>,
-    headerRight: (
-      <Button
-        onPress={() => alert("Changes Saved")}
-        title="Save Changes"
-        style={{ margin: 3 }}
-      />
-    )
+    headerTitle: <Text>Edit To-Do Card</Text>
   };
 
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
-    // this.currentCard = this.props.cards.find(cardItem => cardItem.key == this.props.cards.selectedCard);
-    // this.currentCard = this.props.cards.selectedCard;
-    // conosle.log(this.currentCard);
-    // this.cCourse = this.currentCard.course;
   }
 
   async openTimePickerDialog() {
@@ -55,12 +40,8 @@ class CardEditScreen extends Component {
         this.props.selectCard.startTime = { hour: hour, minute: minute };
       }
     } catch ({ code, message }) {
-      // console.warn("Cannot open time picker", message);
+      console.warn("Cannot open time picker", message);
     }
-  }
-
-  saveChanges() {
-    const newCard = { course: this.currentCard.course };
   }
 
   render() {
@@ -76,19 +57,22 @@ class CardEditScreen extends Component {
       currentStartTime = <Text>Selected Start Time: Not Selected</Text>;
     }
 
-    // console.log(this.props.selectedCard);
-    // console.log("HERE");
-
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Course: {this.props.selectedCard.course}</Text>
         <Picker
           selectedValue={this.props.selectedCard.course}
           style={{ height: 50, width: "100%" }}
-          mode="dialog"
           onValueChange={(itemValue, itemIndex) => {
-            // this.props.editCard(this.props.selectCard.key, {});
-            // this.currentCard.course = itemValue;
+            console.log("from list change:");
+            console.log({
+              ...this.props.selectedCard,
+              course: itemValue
+            });
+            this.props.editCard(this.props.selectedCard.key, {
+              ...this.props.selectedCard,
+              course: itemValue
+            });
           }}
         >
           <Picker.Item label="Physics" value="Physics" />
@@ -99,10 +83,7 @@ class CardEditScreen extends Component {
         <Picker
           selectedValue={this.props.selectedCard.duration}
           style={{ height: 50, width: "100%" }}
-          mode="dialog"
-          onValueChange={(itemValue, itemIndex) =>
-            this.props.editCard(this.props.selectedCard.key, {})
-          }
+          onValueChange={(itemValue, itemIndex) => {}}
         >
           <Picker.Item label="15 Minutes" value="15" />
           <Picker.Item label="30 Minutes" value="30" />
@@ -114,7 +95,6 @@ class CardEditScreen extends Component {
           title="Select Start Time"
           onPress={() => this.openTimePickerDialog()}
         />
-        <Button title="Save" onPress={() => this.saveChanges()} />
       </View>
     );
   }
@@ -143,5 +123,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CardEditScreen);
-
-// export default CardEditScreen;

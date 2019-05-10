@@ -19,7 +19,8 @@ export const addCard = (cType, cCourse, cDuration, cStartTime) => {
 export const editCard = (cKey, newCardDetails) => {
   return {
     type: EDIT_CARD,
-    newCardDetails: newCardDetails
+    cardKey: cKey,
+    newCardDetails
   };
 };
 
@@ -29,10 +30,10 @@ export const deleteCard = () => {
   };
 };
 
-export const selectCard = cardKey => {
+export const selectCard = cardItem => {
   return {
     type: SELECT_CARD,
-    cardKey: cardKey
+    cardItem
   };
 };
 

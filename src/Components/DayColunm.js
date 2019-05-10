@@ -9,7 +9,7 @@ class DayColumn extends Component {
       comps.push(
         <Card
           key={cardItem.key}
-          cardKey={cardItem.key}
+          cardItem={cardItem}
           navigation={this.props.navigation}
         />
       );
@@ -22,10 +22,8 @@ class DayColumn extends Component {
 const styles = StyleSheet.create({
   DayColumnStyle: {
     borderColor: "#dbdbdb",
-    // borderLeftWidth: 1,
     borderRightWidth: 1,
     paddingTop: 0,
-    // width: '33%'
     flex: 1
   }
 });

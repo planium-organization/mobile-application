@@ -36,7 +36,8 @@ const initialState = {
       startTime: null
     }
   ],
-  selectedCard: null
+  selectedCard: null,
+  cardsChanged: false
 };
 
 const dateToDayString = date => {
@@ -58,16 +59,24 @@ const reducer = (state = initialState, action) => {
         })
       };
     case EDIT_CARD:
-      const currentKey = action.newCardDetails.key;
-      let currentCard;
-      for (let day of state.cards) {
-        for (let card of day) {
-          if (card.key === currentKey) {
-          }
-        }
-      }
+      let currentCard = state.cards.find(
+        cardItem => cardItem.key === action.cardKey
+      );
+      currentCard = {
+        ...currentCard,
+        ...action.newCardDetails
+      };
       return {
-        ...state
+        ...state,
+        cards: state.cards.map(cardItem => {
+          if (cardItem.key === currentCard.key) {
+            return currentCard;
+          } else {
+            return cardItem;
+          }
+        }),
+        selectedCard:
+          currentCard.key === action.cardKey ? currentCard : state.selectedCard
       };
     case DELETE_CARD:
       return {
@@ -78,11 +87,9 @@ const reducer = (state = initialState, action) => {
         selectedCard: null
       };
     case SELECT_CARD:
-      const selectedCard = state.cards.find(cardItem => cardItem.key === action.cardKey)
-      console.log(`Selected Card: ${selectedCard.course}`);
       return {
         ...state,
-        selectedCard: selectedCard
+        selectedCard: action.cardItem
       };
     case DESELECT_CARD:
       return {
