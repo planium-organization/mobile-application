@@ -3,11 +3,9 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import TimeTableEntity from "../Components/TimeTableEntity";
-import DayColumn from './../Components/DayColunm';
+import DayColumn from "./../Components/DayColunm";
 import { ScrollView } from "react-native-gesture-handler";
 
-import Card from "../Components/Card";
 import {
   addCard,
   selectCard,
@@ -15,19 +13,17 @@ import {
   deleteCard
 } from "../store/CardsActions";
 
-
-const dateToDayString = date => {
-  return date.getYear().toString();
-};
-
 class TimeTableScreen extends Component {
   addCard() {
     this.props.addCard("todo", "physics", 120, new Date());
   }
 
-  render() {
-    console.log(this.props.cards);
+  getDayCards(dayId) {
+    const result = this.props.cards.filter(cardItem => cardItem.date == dayId);
+    return result;
+  }
 
+  render() {
     return (
       <View style={styles.main}>
         {/* Column Capital */}
@@ -56,19 +52,26 @@ class TimeTableScreen extends Component {
 
         {/* Day columns */}
         <View style={{ flex: 1 }}>
-
-          <ScrollView style={{height: '100%'}}>
+          <ScrollView style={{ height: "100%" }}>
             <View style={styles.DayColumnScroll}>
               {/* columns */}
-              <DayColumn name={'sdgfd'} allCards={[card2, card1,card3,card1]}/>
-             
+              <DayColumn
+                name={"sdgfd"}
+                navigation={this.props.navigation}
+                dayCards={this.getDayCards("day1")}
+              />
 
-              <DayColumn name={'name2'} allCards={[card1, card3, card2, card1, card3]}/>
-            
+              <DayColumn
+                name={"name2"}
+                navigation={this.props.navigation}
+                dayCards={this.getDayCards("day2")}
+              />
 
-              <DayColumn name={'name3'} allCards={[card2, card3, card1]}/>
-                
-              
+              <DayColumn
+                name={"name3"}
+                navigation={this.props.navigation}
+                dayCards={this.getDayCards("day3")}
+              />
             </View>
           </ScrollView>
         </View>
@@ -76,32 +79,16 @@ class TimeTableScreen extends Component {
     );
   }
 }
-var card1 = {
-  name:'Physics',
-  height: 100,
-  color: 'red'
-};
-var card2 = {
-  name: 'Biology',
-  height: 130,
-  color: 'green'
-};
-var card3 = {
-  name: 'Math',
-  height: 80,
-  color: '#a3523f'
-}
+
 const styles = StyleSheet.create({
   ColumnCapitalBox: {
     padding: 2,
     paddingLeft: 2,
-    //borderLeftWidth: 1,
     paddingTop: 10,
     paddingBottom: 10,
     flex: 1,
     flexDirection: "column",
     justifyContent: "center"
-    // alignItems: 'stretch',
   },
   ColumnCapital: {
     borderWidth: 1,
@@ -114,17 +101,14 @@ const styles = StyleSheet.create({
   DayColumnScroll: {
     height: 800,
     borderBottomWidth: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+    flexDirection: "row",
+    justifyContent: "space-around"
   },
   main: {
     flexDirection: "column",
     flex: 1
-    // borderWidth: 1
-    //width: "100%"
   },
   timeTableEntity: {
-    // height: 60
   }
 });
 
@@ -146,7 +130,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-// export default TimeTableScreen;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
