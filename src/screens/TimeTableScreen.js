@@ -24,8 +24,13 @@ class TimeTableScreen extends Component {
     this.props.addCard("todo", "physics", 120, new Date());
   }
 
+  getDayCards(dayId) {
+    const result = this.props.cards.filter(cardItem => cardItem.date == dayId);
+    return result;
+  }
+
   render() {
-    console.log(this.props.cards);
+    // console.log(this.props.cards);
 
     return (
       <View style={styles.main}>
@@ -61,22 +66,19 @@ class TimeTableScreen extends Component {
               <DayColumn
                 name={"sdgfd"}
                 navigation={this.props.navigation}
-                allCards={[card2, card1, card3, card1]}
-                dayCards={this.props.cards["day1"]}
+                dayCards={this.getDayCards("day1")}
               />
 
               <DayColumn
                 name={"name2"}
                 navigation={this.props.navigation}
-                allCards={[card1, card3, card2, card1, card3]}
-                dayCards={this.props.cards["day2"]}
+                dayCards={this.getDayCards("day2")}
               />
 
               <DayColumn
                 name={"name3"}
                 navigation={this.props.navigation}
-                allCards={[card2, card3, card1]}
-                dayCards={this.props.cards["day3"]}
+                dayCards={this.getDayCards("day3")}
               />
             </View>
           </ScrollView>

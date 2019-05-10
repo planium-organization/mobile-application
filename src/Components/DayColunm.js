@@ -4,15 +4,18 @@ import Card from "./Card";
 
 class DayColumn extends Component {
   render() {
-    return (
-      <View style={styles.DayColumnStyle}>
-        {/* <Text>{this.props.name}</Text> */}
-        {/* card component */}
-        {this.props.dayCards.map(val => {
-          return <Card card={val} navigation={this.props.navigation} />;
-        })}
-      </View>
-    );
+    const comps = [];
+    this.props.dayCards.map(cardItem => {
+      comps.push(
+        <Card
+          key={cardItem.key}
+          cardKey={cardItem.key}
+          navigation={this.props.navigation}
+        />
+      );
+    });
+
+    return <View style={styles.DayColumnStyle}>{comps}</View>;
   }
 }
 

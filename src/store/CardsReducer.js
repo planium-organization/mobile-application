@@ -7,38 +7,35 @@ import {
 } from "./ActionTypes";
 
 const initialState = {
-  cards: {
-    day1: [
-      {
-        key: Math.random(),
-        type: "todo",
-        course: "Maths",
-        color: "#273baa",
-        duration: 75,
-        startTime: { hour: 0, minute: 12 }
-      }
-    ],
-    day2: [
-      {
-        key: Math.random(),
-        type: "todo",
-        course: "Physics",
-        color: "#c12828",
-        duration: 120,
-        startTime: null
-      }
-    ],
-    day3: [
-      {
-        key: Math.random(),
-        type: "todo",
-        course: "Physics",
-        color: "#c12828",
-        duration: 120,
-        startTime: null
-      }
-    ]
-  },
+  cards: [
+    {
+      key: parseInt(Math.random() * 10000),
+      type: "todo",
+      course: "Maths",
+      color: "#273baa",
+      date: "day1",
+      duration: 75,
+      startTime: { hour: 0, minute: 12 }
+    },
+    {
+      key: parseInt(Math.random() * 10000),
+      type: "todo",
+      course: "Physics",
+      color: "#c12828",
+      date: "day2",
+      duration: 120,
+      startTime: null
+    },
+    {
+      key: parseInt(Math.random() * 10000),
+      type: "todo",
+      course: "Physics",
+      color: "#c12828",
+      date: "day3",
+      duration: 120,
+      startTime: null
+    }
+  ],
   selectedCard: null
 };
 
@@ -61,6 +58,14 @@ const reducer = (state = initialState, action) => {
         })
       };
     case EDIT_CARD:
+      const currentKey = action.newCardDetails.key;
+      let currentCard;
+      for (let day of state.cards) {
+        for (let card of day) {
+          if (card.key === currentKey) {
+          }
+        }
+      }
       return {
         ...state
       };
@@ -73,9 +78,11 @@ const reducer = (state = initialState, action) => {
         selectedCard: null
       };
     case SELECT_CARD:
+      const selectedCard = state.cards.find(cardItem => cardItem.key === action.cardKey)
+      console.log(`Selected Card: ${selectedCard.course}`);
       return {
         ...state,
-        selectedCard: action.cardData
+        selectedCard: selectedCard
       };
     case DESELECT_CARD:
       return {

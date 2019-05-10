@@ -29,10 +29,10 @@ export const deleteCard = () => {
   };
 };
 
-export const selectCard = card => {
+export const selectCard = cardKey => {
   return {
     type: SELECT_CARD,
-    cardData: card
+    cardKey: cardKey
   };
 };
 

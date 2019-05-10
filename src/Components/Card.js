@@ -18,8 +18,7 @@ import {
 class Card extends Component {
   onPressHnd() {
     // navigate to card edit page
-    // console.log(this.props.card);
-    this.props.selectCard(this.props.card);
+    this.props.selectCard(this.props.cardKey);
     this.props.navigation.push("CardEdit");
   }
 
@@ -27,16 +26,22 @@ class Card extends Component {
     // mark card as done
   }
 
+  componentWillMount() {
+    this.currentCard = this.props.cards.find(
+      cardItem => cardItem.key === this.props.cardKey
+    );
+  }
+
   render() {
     const cardOnLoadProps = StyleSheet.create({
       HeightOnLoad: {
-        height: this.props.card.duration
+        height: this.currentCard.duration
       },
       ColorOnLoad: {
         width: 6,
         borderRadius: 3,
         margin: 4,
-        backgroundColor: this.props.card.color
+        backgroundColor: this.currentCard.color
       }
     });
     return (
@@ -46,7 +51,7 @@ class Card extends Component {
       >
         <View style={[styles.Main, cardOnLoadProps.HeightOnLoad]}>
           <View style={cardOnLoadProps.ColorOnLoad} />
-          <Text style={styles.CardMainText}>{this.props.card.course}</Text>
+          <Text style={styles.CardMainText}>{this.currentCard.course}</Text>
         </View>
       </TouchableNativeFeedback>
     );
@@ -93,5 +98,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Card);
-
-// export default Card;
