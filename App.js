@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import {
@@ -16,9 +8,9 @@ import {
 } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import HomeScreen from "./src/screens/homeScreen";
+import ChannelScreen from "./src/screens/ChannelScreen";
 import TimeTableScreen from "./src/screens/TimeTableScreen";
-import ProfileScreen from "./src/screens/profileScreen";
+import AnalysisScreen from "./src/screens/profileScreen";
 import CardEditScreen from "./src/screens/CardEditScreen";
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
@@ -38,8 +30,8 @@ const TimeTableNavigator = createStackNavigator(
 const AppTabNavigator = createBottomTabNavigator(
   {
     TimeTable: TimeTableNavigator ,
-    Analysis: { screen: HomeScreen },
-    Channels: { screen: HomeScreen }
+    Analysis: { screen: AnalysisScreen },
+    Channels: { screen: ChannelScreen }
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

@@ -3,7 +3,9 @@ import {
   EDIT_CARD,
   DELETE_CARD,
   SELECT_CARD,
-  DESELECT_CARD
+  DESELECT_CARD,
+  SHOW_COMMENTS,
+  HIDE_COMMENTS
 } from "./ActionTypes";
 
 const initialState = {
@@ -37,7 +39,7 @@ const initialState = {
     }
   ],
   selectedCard: null,
-  cardsChanged: false
+  visibleComments: null
 };
 
 const dateToDayString = date => {
@@ -95,6 +97,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCard: null
+      };
+    case SHOW_COMMENTS:
+      return {
+        ...state,
+        visibleComments: ["Test Comment 1", "Test Comment 2", "Test Comment 3"]
+      };
+    case HIDE_COMMENTS:
+      return {
+        ...state,
+        visibleComments: null
       };
     default:
       return state;

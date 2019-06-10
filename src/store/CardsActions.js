@@ -3,7 +3,9 @@ import {
   EDIT_CARD,
   DELETE_CARD,
   SELECT_CARD,
-  DESELECT_CARD
+  DESELECT_CARD,
+  SHOW_COMMENTS,
+  HIDE_COMMENTS,
 } from "./ActionTypes";
 
 export const addCard = (cType, cCourse, cDuration, cStartTime) => {
@@ -42,3 +44,16 @@ export const deselectCard = () => {
     type: DESELECT_CARD
   };
 };
+
+export const showComments = (ofDay) => {
+  return {
+    type: SHOW_COMMENTS,
+    payload: ofDay,
+  };
+}
+
+export const hideComments = () => {
+  return {
+    type: HIDE_COMMENTS,
+  };
+}
