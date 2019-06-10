@@ -1,21 +1,39 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Button,
+  Modal,
+  TouchableNativeFeedback
+} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import DayColumn from "./../Components/DayColunm";
 import { ScrollView } from "react-native-gesture-handler";
+import ViewCommentsModal from "./../modals/ViewComments";
 
 import {
   addCard,
   selectCard,
   deselectCard,
-  deleteCard
+  deleteCard,
+  showComments,
+  hideComments
 } from "../store/CardsActions";
 
 class TimeTableScreen extends Component {
+  state = {
+    modalVisible: false
+  };
+
   addCard() {
     this.props.addCard("todo", "physics", 120, new Date());
+  }
+
+  showComments(ofDay) {
+    this.props.showComments(ofDay);
   }
 
   getDayCards(dayId) {
@@ -29,9 +47,15 @@ class TimeTableScreen extends Component {
         {/* Column Capital */}
         <View style={styles.ColumnCapital}>
           <View style={styles.ColumnCapitalBox}>
-            <Text style={{ textAlign: "center", textAlignVertical: "center" }}>
-              Yesterday
-            </Text>
+            <TouchableNativeFeedback
+              onPress={() => this.showComments(new Date())}
+            >
+              <Text
+                style={{ textAlign: "center", textAlignVertical: "center" }}
+              >
+                Yesterday
+              </Text>
+            </TouchableNativeFeedback>
           </View>
           <View
             style={[
@@ -75,6 +99,8 @@ class TimeTableScreen extends Component {
             </View>
           </ScrollView>
         </View>
+
+        <ViewCommentsModal/>
       </View>
     );
   }
@@ -108,14 +134,14 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1
   },
-  timeTableEntity: {
-  }
+  timeTableEntity: {}
 });
 
 const mapStateToProps = state => {
   return {
     cards: state.cards.cards,
-    selectedCard: state.cards.selectedCard
+    selectedCard: state.cards.selectedCard,
+    visibleComments: state.cards.visibleComments
   };
 };
 
@@ -125,7 +151,9 @@ const mapDispatchToProps = dispatch =>
       addCard,
       deleteCard,
       selectCard,
-      deselectCard
+      deselectCard,
+      showComments,
+      hideComments
     },
     dispatch
   );
