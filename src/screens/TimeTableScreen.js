@@ -20,24 +20,52 @@ import {
   deselectCard,
   deleteCard,
   showComments,
-  hideComments
+  hideComments,
+  tableCurrentDate
 } from "../store/CardsActions";
 
-class TimeTableScreen extends Component {
-  state = {
-    modalVisible: false
-  };
+function areInSameDay(date1, date2) {
+  const result =
+    date1.getFullYear() == date2.getFullYear() &&
+    date1.getMonth() == date2.getMonth() &&
+    date1.getDay() == date2.getDay();
+  return result;
+}
 
+class TimeTableScreen extends Component {
   addCard() {
     this.props.addCard("todo", "physics", 120, new Date());
+  }
+
+  getDateForColumn(columnIndex) {
+    let retVal = new Date(this.props.currDate);
+    retVal.setDate(retVal.getDate() + columnIndex);
+    return retVal;
+  }
+
+  getDateForColumnString(columnIndex) {
+    const current = this.getDateForColumn(columnIndex);
+    return current.toLocaleDateString("en-US", {
+      timeZone: "Asia/Tehran"
+    });
+  }
+
+  getVisualWeekday(columnIndex) {
+    const current = this.getDateForColumn(columnIndex);
+    return current.toLocaleDateString("en-US", {
+      timeZone: "Asia/Tehran",
+      weekday: "long"
+    });
   }
 
   showComments(ofDay) {
     this.props.showComments(ofDay);
   }
 
-  getDayCards(dayId) {
-    const result = this.props.cards.filter(cardItem => cardItem.date == dayId);
+  getDayCards(date) {
+    const result = this.props.cards.filter(cardItem =>
+      areInSameDay(cardItem.date, date)
+    );
     return result;
   }
 
@@ -48,13 +76,20 @@ class TimeTableScreen extends Component {
         <View style={styles.ColumnCapital}>
           <View style={styles.ColumnCapitalBox}>
             <TouchableNativeFeedback
-              onPress={() => this.showComments(new Date())}
+              onPress={() => this.showComments(this.getDateForColumn(0))}
             >
-              <Text
-                style={{ textAlign: "center", textAlignVertical: "center" }}
-              >
-                Yesterday
-              </Text>
+              <View>
+                <Text
+                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                >
+                  {this.getVisualWeekday(0)}
+                </Text>
+                <Text
+                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                >
+                  {this.getDateForColumnString(0)}
+                </Text>
+              </View>
             </TouchableNativeFeedback>
           </View>
           <View
@@ -63,14 +98,40 @@ class TimeTableScreen extends Component {
               { borderLeftWidth: 1, borderRightWidth: 1 }
             ]}
           >
-            <Text style={{ textAlign: "center", textAlignVertical: "center" }}>
-              Today
-            </Text>
+            <TouchableNativeFeedback
+              onPress={() => this.showComments(this.getDateForColumn(1))}
+            >
+              <View>
+                <Text
+                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                >
+                  {this.getVisualWeekday(1)}
+                </Text>
+                <Text
+                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                >
+                  {this.getDateForColumnString(1)}
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
           </View>
           <View style={styles.ColumnCapitalBox}>
-            <Text style={{ textAlign: "center", textAlignVertical: "center" }}>
-              Tommorow
-            </Text>
+            <TouchableNativeFeedback
+              onPress={() => this.showComments(this.getDateForColumn(2))}
+            >
+              <View>
+                <Text
+                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                >
+                  {this.getVisualWeekday(2)}
+                </Text>
+                <Text
+                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                >
+                  {this.getDateForColumnString(2)}
+                </Text>
+              </View>
+            </TouchableNativeFeedback>
           </View>
         </View>
 
@@ -80,27 +141,25 @@ class TimeTableScreen extends Component {
             <View style={styles.DayColumnScroll}>
               {/* columns */}
               <DayColumn
-                name={"sdgfd"}
                 navigation={this.props.navigation}
-                dayCards={this.getDayCards("day1")}
+                dayCards={this.getDayCards(this.getDateForColumn(0))}
+                date={this.getDateForColumn(0)}
               />
-
               <DayColumn
-                name={"name2"}
                 navigation={this.props.navigation}
-                dayCards={this.getDayCards("day2")}
+                dayCards={this.getDayCards(this.getDateForColumn(1))}
+                date={this.getDateForColumn(1)}
               />
-
               <DayColumn
-                name={"name3"}
                 navigation={this.props.navigation}
-                dayCards={this.getDayCards("day3")}
+                dayCards={this.getDayCards(this.getDateForColumn(2))}
+                date={this.getDateForColumn(2)}
               />
             </View>
           </ScrollView>
         </View>
 
-        <ViewCommentsModal/>
+        <ViewCommentsModal />
       </View>
     );
   }
@@ -141,7 +200,8 @@ const mapStateToProps = state => {
   return {
     cards: state.cards.cards,
     selectedCard: state.cards.selectedCard,
-    visibleComments: state.cards.visibleComments
+    visibleComments: state.cards.visibleComments,
+    currDate: state.cards.currDate
   };
 };
 
@@ -153,7 +213,8 @@ const mapDispatchToProps = dispatch =>
       selectCard,
       deselectCard,
       showComments,
-      hideComments
+      hideComments,
+      tableCurrentDate
     },
     dispatch
   );

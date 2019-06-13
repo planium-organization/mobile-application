@@ -6,6 +6,7 @@ import {
   DESELECT_CARD,
   SHOW_COMMENTS,
   HIDE_COMMENTS,
+  TABLE_CURRENT_DATE,
 } from "./ActionTypes";
 
 export const addCard = (cType, cCourse, cDuration, cStartTime) => {
@@ -55,5 +56,12 @@ export const showComments = (ofDay) => {
 export const hideComments = () => {
   return {
     type: HIDE_COMMENTS,
+  };
+}
+
+export const tableCurrentDate = (currDate) => {
+  return {
+    type: TABLE_CURRENT_DATE,
+    currDate
   };
 }

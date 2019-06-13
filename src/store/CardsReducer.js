@@ -5,7 +5,8 @@ import {
   SELECT_CARD,
   DESELECT_CARD,
   SHOW_COMMENTS,
-  HIDE_COMMENTS
+  HIDE_COMMENTS,
+  TABLE_CURRENT_DATE
 } from "./ActionTypes";
 
 const initialState = {
@@ -15,32 +16,46 @@ const initialState = {
       type: "todo",
       course: "Maths",
       color: "#273baa",
-      date: "day1",
+      date: new Date(2019, 5, 13, 12, 15, 0),
       duration: 75,
-      startTime: { hour: 0, minute: 12 }
+      startTime: true
     },
     {
       key: parseInt(Math.random() * 10000),
       type: "todo",
       course: "Physics",
       color: "#c12828",
-      date: "day2",
+      date: new Date(2019, 5, 14, 12, 15, 0),
       duration: 120,
-      startTime: null
+      startTime: true
     },
     {
       key: parseInt(Math.random() * 10000),
       type: "todo",
       course: "Physics",
       color: "#c12828",
-      date: "day3",
-      duration: 120,
-      startTime: null
+      date: new Date(2019, 5, 15),
+      duration: 180,
+      startTime: false
     }
   ],
   selectedCard: null,
-  visibleComments: null
+  visibleComments: null,
+  currDate: new Date()
 };
+
+function getCommentsOfDay(day) {
+  const comms = [];
+  for (let i = 0; i < 12; i++) {
+    comms.push({
+      key: Math.random() * 10000,
+      date: new Date(),
+      text: `this is comment of this is comment of this is comment of this is comment of this is comment of ${i}`,
+      owner: "Alex"
+    });
+  }
+  return comms;
+}
 
 const dateToDayString = date => {
   return date.getYear().toString();
@@ -101,12 +116,17 @@ const reducer = (state = initialState, action) => {
     case SHOW_COMMENTS:
       return {
         ...state,
-        visibleComments: ["Test Comment 1", "Test Comment 2", "Test Comment 3"]
+        visibleComments: getCommentsOfDay(new Date())
       };
     case HIDE_COMMENTS:
       return {
         ...state,
         visibleComments: null
+      };
+    case TABLE_CURRENT_DATE:
+      return {
+        ...state,
+        currDate: action.currDate
       };
     default:
       return state;
