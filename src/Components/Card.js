@@ -1,18 +1,8 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableNativeFeedback
-} from "react-native";
+import { View, Text, StyleSheet, TouchableNativeFeedback } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {
-  addCard,
-  selectCard,
-  deselectCard,
-  deleteCard
-} from "../store/CardsActions";
+import { selectCard } from "../store/CardsActions";
 
 class Card extends Component {
   onPressHnd() {
@@ -56,7 +46,9 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     borderWidth: 1,
     borderColor: "#8f8f8f",
-    margin: 3,
+    marginTop: 3,
+    marginLeft: 3,
+    marginRight: 3,
     borderBottomStartRadius: 5,
     borderBottomEndRadius: 5,
     borderTopEndRadius: 5,
@@ -70,19 +62,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {
-    cards: state.cards.cards,
-    selectedCard: state.cards.selectedCard
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      addCard,
-      deleteCard,
-      selectCard,
-      deselectCard
+      selectCard
     },
     dispatch
   );

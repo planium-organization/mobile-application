@@ -7,6 +7,7 @@ import {
   SHOW_COMMENTS,
   HIDE_COMMENTS,
   TABLE_CURRENT_DATE,
+  ADDING_CARD
 } from "./ActionTypes";
 
 export const addCard = (cType, cCourse, cDuration, cStartTime) => {
@@ -46,22 +47,29 @@ export const deselectCard = () => {
   };
 };
 
-export const showComments = (ofDay) => {
+export const showComments = ofDay => {
   return {
     type: SHOW_COMMENTS,
-    payload: ofDay,
+    payload: ofDay
   };
-}
+};
 
 export const hideComments = () => {
   return {
-    type: HIDE_COMMENTS,
+    type: HIDE_COMMENTS
   };
-}
+};
 
-export const tableCurrentDate = (currDate) => {
+export const tableCurrentDate = currDate => {
   return {
     type: TABLE_CURRENT_DATE,
     currDate
   };
-}
+};
+
+export const addingCardToggle = enable => {
+  return {
+    type: ADDING_CARD,
+    payload: enable
+  };
+};

@@ -5,23 +5,20 @@ import {
   Text,
   Button,
   Modal,
+  ScrollView,
   TouchableNativeFeedback
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import DayColumn from "./../Components/DayColunm";
-import { ScrollView } from "react-native-gesture-handler";
 import ViewCommentsModal from "./../modals/ViewComments";
+import NewCardModal from "./../modals/ViewComments";
 
 import {
-  addCard,
-  selectCard,
-  deselectCard,
-  deleteCard,
   showComments,
-  hideComments,
-  tableCurrentDate
+  tableCurrentDate,
+  addingCardToggle
 } from "../store/CardsActions";
 
 function areInSameDay(date1, date2) {
@@ -33,10 +30,6 @@ function areInSameDay(date1, date2) {
 }
 
 class TimeTableScreen extends Component {
-  addCard() {
-    this.props.addCard("todo", "physics", 120, new Date());
-  }
-
   getDateForColumn(columnIndex) {
     let retVal = new Date(this.props.currDate);
     retVal.setDate(retVal.getDate() + columnIndex);
@@ -58,10 +51,6 @@ class TimeTableScreen extends Component {
     });
   }
 
-  showComments(ofDay) {
-    this.props.showComments(ofDay);
-  }
-
   getDayCards(date) {
     const result = this.props.cards.filter(cardItem =>
       areInSameDay(cardItem.date, date)
@@ -76,7 +65,7 @@ class TimeTableScreen extends Component {
         <View style={styles.ColumnCapital}>
           <View style={styles.ColumnCapitalBox}>
             <TouchableNativeFeedback
-              onPress={() => this.showComments(this.getDateForColumn(0))}
+              onPress={() => this.props.showComments(this.getDateForColumn(0))}
             >
               <View>
                 <Text
@@ -99,7 +88,7 @@ class TimeTableScreen extends Component {
             ]}
           >
             <TouchableNativeFeedback
-              onPress={() => this.showComments(this.getDateForColumn(1))}
+              onPress={() => this.props.showComments(this.getDateForColumn(1))}
             >
               <View>
                 <Text
@@ -117,7 +106,7 @@ class TimeTableScreen extends Component {
           </View>
           <View style={styles.ColumnCapitalBox}>
             <TouchableNativeFeedback
-              onPress={() => this.showComments(this.getDateForColumn(2))}
+              onPress={() => this.props.showComments(this.getDateForColumn(2))}
             >
               <View>
                 <Text
@@ -136,30 +125,55 @@ class TimeTableScreen extends Component {
         </View>
 
         {/* Day columns */}
-        <View style={{ flex: 1 }}>
-          <ScrollView style={{ height: "100%" }}>
-            <View style={styles.DayColumnScroll}>
-              {/* columns */}
-              <DayColumn
-                navigation={this.props.navigation}
-                dayCards={this.getDayCards(this.getDateForColumn(0))}
-                date={this.getDateForColumn(0)}
-              />
-              <DayColumn
-                navigation={this.props.navigation}
-                dayCards={this.getDayCards(this.getDateForColumn(1))}
-                date={this.getDateForColumn(1)}
-              />
-              <DayColumn
-                navigation={this.props.navigation}
-                dayCards={this.getDayCards(this.getDateForColumn(2))}
-                date={this.getDateForColumn(2)}
-              />
-            </View>
-          </ScrollView>
-        </View>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={styles.DayColumnScroll}>
+            {/* columns */}
+            <DayColumn
+              navigation={this.props.navigation}
+              dayCards={this.getDayCards(this.getDateForColumn(0))}
+              date={this.getDateForColumn(0)}
+            />
+            <DayColumn
+              navigation={this.props.navigation}
+              dayCards={this.getDayCards(this.getDateForColumn(1))}
+              date={this.getDateForColumn(1)}
+            />
+            <DayColumn
+              navigation={this.props.navigation}
+              dayCards={this.getDayCards(this.getDateForColumn(2))}
+              date={this.getDateForColumn(2)}
+            />
+          </View>
+        </ScrollView>
 
         <ViewCommentsModal />
+
+        <Modal visible={this.props.addingCard}>
+          <View style={{ heigt: 50 }}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                fontWeight: "bold",
+                margin: 7
+              }}
+            >
+              New Card
+            </Text>
+            <View
+              style={{
+                borderBottomColor: "black",
+                borderBottomWidth: 1
+              }}
+            />
+          </View>
+          <View>
+            <Button
+              title="Close"
+              onPress={() => this.props.addingCardToggle(false)}
+            />
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -176,10 +190,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   ColumnCapital: {
-    borderWidth: 1,
+    borderBottomWidth: 1,
     paddingTop: 10,
     paddingBottom: 5,
-    height: 70,
+    height: 50,
     flexDirection: "row",
     justifyContent: "center"
   },
@@ -199,22 +213,17 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     cards: state.cards.cards,
-    selectedCard: state.cards.selectedCard,
-    visibleComments: state.cards.visibleComments,
-    currDate: state.cards.currDate
+    currDate: state.cards.currDate,
+    addingCard: state.cards.addingCard
   };
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      addCard,
-      deleteCard,
-      selectCard,
-      deselectCard,
       showComments,
-      hideComments,
-      tableCurrentDate
+      tableCurrentDate,
+      addingCardToggle
     },
     dispatch
   );

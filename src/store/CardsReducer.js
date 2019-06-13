@@ -6,7 +6,8 @@ import {
   DESELECT_CARD,
   SHOW_COMMENTS,
   HIDE_COMMENTS,
-  TABLE_CURRENT_DATE
+  TABLE_CURRENT_DATE,
+  ADDING_CARD
 } from "./ActionTypes";
 
 const initialState = {
@@ -34,14 +35,15 @@ const initialState = {
       type: "todo",
       course: "Physics",
       color: "#c12828",
-      date: new Date(2019, 5, 15),
+      date: new Date(2019, 5, 14),
       duration: 180,
       startTime: false
     }
   ],
   selectedCard: null,
   visibleComments: null,
-  currDate: new Date()
+  currDate: new Date(),
+  addingCard: false
 };
 
 function getCommentsOfDay(day) {
@@ -127,6 +129,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         currDate: action.currDate
+      };
+    case ADDING_CARD:
+      return {
+        ...state,
+        addingCard: action.payload
       };
     default:
       return state;

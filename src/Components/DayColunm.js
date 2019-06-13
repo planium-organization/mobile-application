@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Button } from "react-native";
 import Card from "./Card";
+import { addingCardToggle } from "./../store/CardsActions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class DayColumn extends Component {
   render() {
-    const comps = [];
-    this.props.dayCards.map(cardItem => {
-      comps.push(
+    const cards = [];
+    this.props.dayCards.forEach(cardItem => {
+      cards.push(
         <Card
           key={cardItem.key}
           cardItem={cardItem}
@@ -15,7 +18,17 @@ class DayColumn extends Component {
       );
     });
 
-    return <View style={styles.DayColumnStyle}>{comps}</View>;
+    return (
+      <View style={styles.DayColumnStyle}>
+        {cards}
+        <View style={{ margin: 3 }}>
+          <Button
+            title="+"
+            onPress={() => this.props.addingCardToggle(true)}
+          />
+        </View>
+      </View>
+    );
   }
 }
 
@@ -28,4 +41,21 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DayColumn;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      addingCardToggle
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DayColumn);
+
+// export default DayColumn;
