@@ -26,7 +26,7 @@ class DayColumn extends Component {
             title="+"
             onPress={() => {
               this.props.selectCard(null);
-              this.props.navigation.push("CardEdit", { newCard: true });
+              this.props.navigation.push("CardEdit", { newCard: true, newCardDate: this.props.date });
             }}
           />
         </View>

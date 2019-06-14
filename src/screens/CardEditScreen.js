@@ -10,6 +10,8 @@ import {
   deleteCard
 } from "../store/CardsActions";
 
+import { courses } from "./../res/colors";
+
 class CardEditScreen extends Component {
   static navigationOptions = {
     tabBarVisible: false,
@@ -76,15 +78,32 @@ class CardEditScreen extends Component {
     }
   }
 
+  generateCoursePickerItems() {
+    const items = [];
+    courses.forEach(item =>
+      items.push(
+        <Picker.Item label={item.identifier} value={item.identifier} />
+      )
+    );
+    return items;
+  }
+
   componentWillMount() {
     const newCard = this.props.navigation.getParam("newCard", false);
 
     if (!newCard) {
-      console.warn("editing existing card");
       this.setState(prevState => ({
         ...prevState,
         selectedCard: {
           ...this.props.selectedCard
+        }
+      }));
+    } else {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedCard: {
+          ...prevState.selectedCard,
+          date: this.props.navigation.getParam("newCardDate", new Date())
         }
       }));
     }
@@ -105,7 +124,6 @@ class CardEditScreen extends Component {
     }
 
     return (
-      // alignItems: "center", justifyContent: "center"
       <View style={{ flex: 1, margin: 5 }}>
         <Text style={{ marginTop: 10, fontSize: 16 }}>
           Course: {this.state.selectedCard.course}
@@ -121,34 +139,9 @@ class CardEditScreen extends Component {
                 course: itemValue
               }
             }));
-            // this.state.selectedCard.course = itemValue;
           }}
         >
-          <Picker.Item label="Literature" value="Literature" />
-          <Picker.Item
-            label="Writing or Composition"
-            value="Writing or Composition"
-          />
-          <Picker.Item label="Speech" value="Speech" />
-          <Picker.Item label="Algebra" value="Algebra" />
-          <Picker.Item label="Geometry" value="Geometry" />
-          <Picker.Item
-            label="Trigonometry and/or Calculus"
-            value="Trigonometry and/or Calculus"
-          />
-          <Picker.Item label="Statistics" value="Statistics" />
-          <Picker.Item label="Biology" value="Biology" />
-          <Picker.Item label="Chemistry" value="Chemistry" />
-          <Picker.Item label="Physics" value="Physics" />
-          <Picker.Item
-            label="Earth or Space Sciences"
-            value="Earth or Space Sciences"
-          />
-          <Picker.Item label="U.S. History" value="U.S. History" />
-          <Picker.Item label="U.S. Government" value="U.S. Government" />
-          <Picker.Item label="Economics" value="Economics" />
-          <Picker.Item label="World History" value="World History" />
-          <Picker.Item label="Geography" value="Geography" />
+          {this.generateCoursePickerItems()}
         </Picker>
 
         <Text style={{ marginTop: 10, fontSize: 16 }}>

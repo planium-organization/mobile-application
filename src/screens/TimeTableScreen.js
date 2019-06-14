@@ -42,7 +42,14 @@ class TimeTableScreen extends Component {
         <View style={{ width: 100 }}>
           <Button style={{}} title="Prev" onPress={() => {}} />
         </View>
-        <Text style={{ flex: 1, fontSize: 16, textAlignVertical: "center", textAlign: "center" }}>
+        <Text
+          style={{
+            flex: 1,
+            fontSize: 16,
+            textAlignVertical: "center",
+            textAlign: "center"
+          }}
+        >
           Time Table
         </Text>
         <View style={{ width: 100 }}>
@@ -169,39 +176,6 @@ class TimeTableScreen extends Component {
         </ScrollView>
 
         <ViewCommentsModal />
-
-        {/* new card modal */}
-        {/* <Modal visible={this.props.addingCard}>
-          <View style={{ heigt: 50 }}>
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                fontWeight: "bold",
-                margin: 7
-              }}
-            >
-              New Card
-            </Text>
-            <View
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1
-              }}
-            />
-          </View>
-
-          <View style={{ flex: 1 }}>
-            
-          </View>
-
-          <View>
-            <Button
-              title="Close"
-              onPress={() => this.props.addingCardToggle(false)}
-            />
-          </View>
-        </Modal> */}
       </View>
     );
   }

@@ -10,41 +10,7 @@ import {
   ADDING_CARD
 } from "./ActionTypes";
 
-const initialState = {
-  cards: [
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Maths",
-      color: "#273baa",
-      date: new Date(2019, 5, 13, 12, 15, 0),
-      duration: 75,
-      startTime: true
-    },
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Physics",
-      color: "#c12828",
-      date: new Date(2019, 5, 14, 12, 15, 0),
-      duration: 120,
-      startTime: true
-    },
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Physics",
-      color: "#c12828",
-      date: new Date(2019, 5, 14),
-      duration: 180,
-      startTime: false
-    }
-  ],
-  selectedCard: null,
-  visibleComments: null,
-  currDate: new Date(),
-  addingCard: false
-};
+import { courses } from "./../res/colors";
 
 function getCommentsOfDay(day) {
   const comms = [];
@@ -59,12 +25,44 @@ function getCommentsOfDay(day) {
   return comms;
 }
 
-const dateToDayString = date => {
-  return date.getYear().toString();
-};
+function mapCourseToColor(course) {
+  return courses.find(item => item.identifier === course).color;
+}
 
-const mapCourseToColor = course => {
-  return "#c12828";
+const initialState = {
+  cards: [
+    {
+      key: parseInt(Math.random() * 10000),
+      type: "todo",
+      course: "Literature",
+      color: mapCourseToColor("Literature"),
+      date: new Date(2019, 5, 15, 12, 15, 0),
+      duration: 75,
+      startTime: true
+    },
+    {
+      key: parseInt(Math.random() * 10000),
+      type: "todo",
+      course: "Physics",
+      color: mapCourseToColor("Physics"),
+      date: new Date(2019, 5, 16, 12, 15, 0),
+      duration: 120,
+      startTime: true
+    },
+    {
+      key: parseInt(Math.random() * 10000),
+      type: "todo",
+      course: "Physics",
+      color: mapCourseToColor("Physics"),
+      date: new Date(2019, 5, 14),
+      duration: 180,
+      startTime: false
+    }
+  ],
+  selectedCard: null,
+  visibleComments: null,
+  currDate: new Date(),
+  addingCard: false
 };
 
 const reducer = (state = initialState, action) => {
