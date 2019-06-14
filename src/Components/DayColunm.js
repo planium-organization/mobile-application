@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, Button } from "react-native";
 import Card from "./Card";
-import { addingCardToggle } from "./../store/CardsActions";
+import { addingCardToggle, selectCard } from "./../store/CardsActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -24,7 +24,10 @@ class DayColumn extends Component {
         <View style={{ margin: 3 }}>
           <Button
             title="+"
-            onPress={() => this.props.addingCardToggle(true)}
+            onPress={() => {
+              this.props.selectCard(null);
+              this.props.navigation.push("CardEdit", { newCard: true });
+            }}
           />
         </View>
       </View>
@@ -48,6 +51,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
+      selectCard,
       addingCardToggle
     },
     dispatch

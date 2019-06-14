@@ -30,6 +30,28 @@ function areInSameDay(date1, date2) {
 }
 
 class TimeTableScreen extends Component {
+  static navigationOptions = {
+    headerTitle: (
+      <View
+        style={{
+          flex: 1,
+          margin: 5,
+          flexDirection: "row"
+        }}
+      >
+        <View style={{ width: 100 }}>
+          <Button style={{}} title="Prev" onPress={() => {}} />
+        </View>
+        <Text style={{ flex: 1, fontSize: 16, textAlignVertical: "center", textAlign: "center" }}>
+          Time Table
+        </Text>
+        <View style={{ width: 100 }}>
+          <Button style={{}} title="Next" onPress={() => {}} />
+        </View>
+      </View>
+    )
+  };
+
   getDateForColumn(columnIndex) {
     let retVal = new Date(this.props.currDate);
     retVal.setDate(retVal.getDate() + columnIndex);
@@ -148,7 +170,8 @@ class TimeTableScreen extends Component {
 
         <ViewCommentsModal />
 
-        <Modal visible={this.props.addingCard}>
+        {/* new card modal */}
+        {/* <Modal visible={this.props.addingCard}>
           <View style={{ heigt: 50 }}>
             <Text
               style={{
@@ -167,13 +190,18 @@ class TimeTableScreen extends Component {
               }}
             />
           </View>
+
+          <View style={{ flex: 1 }}>
+            
+          </View>
+
           <View>
             <Button
               title="Close"
               onPress={() => this.props.addingCardToggle(false)}
             />
           </View>
-        </Modal>
+        </Modal> */}
       </View>
     );
   }

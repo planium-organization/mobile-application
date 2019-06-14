@@ -12,19 +12,44 @@ import {
 
 class CardEditScreen extends Component {
   static navigationOptions = {
-    headerTitle: <Text>Edit To-Do Card</Text>
+    tabBarVisible: false,
+    headerTitle: (
+      <View
+        style={{
+          flex: 1,
+          margin: 5,
+          flexDirection: "row"
+        }}
+      >
+        <Text style={{ flex: 1, fontSize: 16, textAlignVertical: "center" }}>
+          Edit To-Do Card
+        </Text>
+      </View>
+    )
   };
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      selectedCard: {
+        key: parseInt(Math.random() * 10000),
+        type: "todo",
+        course: "Literature",
+        color: "#c12418",
+        date: new Date(),
+        duration: 90,
+        startTime: false
+      }
+    };
   }
 
   async openTimePickerDialog() {
     try {
       let initHour, initMinute;
-      if (this.props.selectedCard.startTime != null) {
-        initHour = this.props.selectedCard.startTime.hour;
-        initMinute = this.props.selectedCard.startTime.minute;
+      if (this.state.selectedCard.startTime) {
+        initHour = this.state.selectedCard.date.getHours();
+        initMinute = this.state.selectedCard.date.getMinutes();
       } else {
         const now = new Date();
         initHour = now.getHours();
@@ -37,64 +62,171 @@ class CardEditScreen extends Component {
       });
       if (action !== TimePickerAndroid.dismissedAction) {
         // Selected hour (0-23), minute (0-59)
-        this.props.selectCard.startTime = { hour: hour, minute: minute };
+        this.state.selectedCard.date.setHours(hour, minute);
+        this.setState((prevState, props) => ({
+          ...prevState,
+          selectedCard: {
+            ...prevState.selectedCard,
+            startTime: true
+          }
+        }));
       }
     } catch ({ code, message }) {
       console.warn("Cannot open time picker", message);
     }
   }
 
+  componentWillMount() {
+    const newCard = this.props.navigation.getParam("newCard", false);
+
+    if (!newCard) {
+      console.warn("editing existing card");
+      this.setState(prevState => ({
+        ...prevState,
+        selectedCard: {
+          ...this.props.selectedCard
+        }
+      }));
+    }
+  }
+
   render() {
     let currentStartTime;
-    if (this.props.selectedCard.startTime != null) {
+    if (this.state.selectedCard.startTime) {
       currentStartTime = (
-        <Text>
-          Selected Start Time: {this.props.selectedCard.startTime.hour}:
-          {this.props.selectedCard.startTime.minute}
-        </Text>
+        <Text>Start Time: {this.state.selectedCard.date.toString()}</Text>
       );
     } else {
-      currentStartTime = <Text>Selected Start Time: Not Selected</Text>;
+      currentStartTime = (
+        <Text style={{ marginTop: 10, fontSize: 16 }}>
+          Start Time: Not Selected
+        </Text>
+      );
     }
 
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Course: {this.props.selectedCard.course}</Text>
+      // alignItems: "center", justifyContent: "center"
+      <View style={{ flex: 1, margin: 5 }}>
+        <Text style={{ marginTop: 10, fontSize: 16 }}>
+          Course: {this.state.selectedCard.course}
+        </Text>
         <Picker
-          selectedValue={this.props.selectedCard.course}
-          style={{ height: 50, width: "100%" }}
+          selectedValue={this.state.selectedCard.course}
+          style={{ height: 50, width: "100%", marginTop: 10 }}
           onValueChange={(itemValue, itemIndex) => {
-            console.log("from list change:");
-            console.log({
-              ...this.props.selectedCard,
-              course: itemValue
-            });
-            this.props.editCard(this.props.selectedCard.key, {
-              ...this.props.selectedCard,
-              course: itemValue
-            });
+            this.setState((prevState, props) => ({
+              ...prevState,
+              selectedCard: {
+                ...prevState.selectedCard,
+                course: itemValue
+              }
+            }));
+            // this.state.selectedCard.course = itemValue;
           }}
         >
+          <Picker.Item label="Literature" value="Literature" />
+          <Picker.Item
+            label="Writing or Composition"
+            value="Writing or Composition"
+          />
+          <Picker.Item label="Speech" value="Speech" />
+          <Picker.Item label="Algebra" value="Algebra" />
+          <Picker.Item label="Geometry" value="Geometry" />
+          <Picker.Item
+            label="Trigonometry and/or Calculus"
+            value="Trigonometry and/or Calculus"
+          />
+          <Picker.Item label="Statistics" value="Statistics" />
+          <Picker.Item label="Biology" value="Biology" />
+          <Picker.Item label="Chemistry" value="Chemistry" />
           <Picker.Item label="Physics" value="Physics" />
-          <Picker.Item label="Maths" value="Maths" />
+          <Picker.Item
+            label="Earth or Space Sciences"
+            value="Earth or Space Sciences"
+          />
+          <Picker.Item label="U.S. History" value="U.S. History" />
+          <Picker.Item label="U.S. Government" value="U.S. Government" />
+          <Picker.Item label="Economics" value="Economics" />
+          <Picker.Item label="World History" value="World History" />
+          <Picker.Item label="Geography" value="Geography" />
         </Picker>
 
-        <Text>Duration: {this.props.selectedCard.duration}</Text>
+        <Text style={{ marginTop: 10, fontSize: 16 }}>
+          Duration: {this.state.selectedCard.duration} minutes
+        </Text>
         <Picker
-          selectedValue={this.props.selectedCard.duration}
-          style={{ height: 50, width: "100%" }}
-          onValueChange={(itemValue, itemIndex) => {}}
+          selectedValue={this.state.selectedCard.duration.toString()}
+          style={{ height: 50, width: "100%", marginTop: 10 }}
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState((prevState, props) => ({
+              ...prevState,
+              selectedCard: {
+                ...prevState.selectedCard,
+                duration: parseInt(itemValue)
+              }
+            }));
+          }}
         >
-          <Picker.Item label="15 Minutes" value="15" />
-          <Picker.Item label="30 Minutes" value="30" />
+          <Picker.Item label="0:15" value="15" />
+          <Picker.Item label="0:30" value="30" />
+          <Picker.Item label="0:45" value="45" />
+          <Picker.Item label="1:00" value="60" />
+          <Picker.Item label="1:15" value="75" />
+          <Picker.Item label="1:30" value="90" />
+          <Picker.Item label="2:00" value="120" />
+          <Picker.Item label="2:30" value="150" />
+          <Picker.Item label="3:00" value="180" />
+          <Picker.Item label="3:30" value="210" />
         </Picker>
 
         {currentStartTime}
 
-        <Button
-          title="Select Start Time"
-          onPress={() => this.openTimePickerDialog()}
-        />
+        <View style={{ margin: 5, marginTop: 10 }}>
+          <Button
+            title="Select Start Time"
+            onPress={() => this.openTimePickerDialog()}
+          />
+        </View>
+
+        <View style={{ marginTop: 0, flexDirection: "row" }}>
+          <View style={{ flex: 1, margin: 5 }}>
+            <Button
+              title="Close and Discard"
+              style={{ flex: 1, margin: 5 }}
+              onPress={() => this.props.navigation.goBack()}
+            />
+          </View>
+          <View style={{ flex: 1, margin: 5 }}>
+            <Button
+              title="Close and Save"
+              onPress={() => {
+                const newCard = this.props.navigation.getParam(
+                  "newCard",
+                  false
+                );
+                if (newCard) {
+                  this.props.addCard(
+                    this.state.selectedCard.type,
+                    this.state.selectedCard.course,
+                    this.state.selectedCard.duration,
+                    this.state.selectedCard.date,
+                    this.state.selectedCard.startTime
+                  );
+                } else {
+                  this.props.editCard(
+                    this.state.selectedCard.key,
+                    this.state.selectedCard.type,
+                    this.state.selectedCard.course,
+                    this.state.selectedCard.duration,
+                    this.state.selectedCard.date,
+                    this.state.selectedCard.startTime
+                  );
+                }
+                this.props.navigation.goBack();
+              }}
+            />
+          </View>
+        </View>
       </View>
     );
   }
@@ -102,7 +234,7 @@ class CardEditScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    cards: state.cards.cards,
+    // cards: state.cards.cards,
     selectedCard: state.cards.selectedCard
   };
 };

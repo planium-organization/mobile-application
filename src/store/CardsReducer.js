@@ -63,39 +63,48 @@ const dateToDayString = date => {
   return date.getYear().toString();
 };
 
+const mapCourseToColor = course => {
+  return "#c12828";
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CARD:
       return {
         ...state,
-        cards: state.cards[dateToDayString(action.cardStartTime)].concat({
-          key: Math.random(),
-          type: action.cardType,
-          course: action.cardCourse,
-          color: "#c12828",
-          duration: action.cardDuration,
-          startTime: action.cardStartTime
-        })
+        cards: [
+          ...state.cards,
+          {
+            key: Math.random(),
+            type: action.cardType,
+            course: action.cardCourse,
+            color: mapCourseToColor(action.cardCourse),
+            duration: action.cardDuration,
+            date: action.cardDate,
+            startTime: action.cardStartTime
+          }
+        ]
       };
     case EDIT_CARD:
-      let currentCard = state.cards.find(
-        cardItem => cardItem.key === action.cardKey
-      );
-      currentCard = {
-        ...currentCard,
-        ...action.newCardDetails
-      };
+      const newCards = state.cards.map(card => {
+        if (card.key === action.cardKey)
+          return {
+            type: action.cardType ? action.cardType : card.type,
+            course: action.cardCourse ? action.cardCourse : card.course,
+            color: mapCourseToColor(
+              action.cardCourse ? action.cardCourse : card.course
+            ),
+            duration: action.cardDuration ? action.cardDuration : card.duration,
+            date: action.cardDate ? action.cardDate : card.date,
+            startTime: action.cardStartTime
+              ? action.cardStartTime
+              : card.startTime
+          };
+        else return card;
+      });
       return {
         ...state,
-        cards: state.cards.map(cardItem => {
-          if (cardItem.key === currentCard.key) {
-            return currentCard;
-          } else {
-            return cardItem;
-          }
-        }),
-        selectedCard:
-          currentCard.key === action.cardKey ? currentCard : state.selectedCard
+        cards: newCards
       };
     case DELETE_CARD:
       return {

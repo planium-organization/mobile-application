@@ -10,21 +10,39 @@ import {
   ADDING_CARD
 } from "./ActionTypes";
 
-export const addCard = (cType, cCourse, cDuration, cStartTime) => {
+export const addCard = (
+  cardType,
+  cardCourse,
+  cardDuration,
+  cardDate,
+  cardStartTime
+) => {
   return {
     type: ADD_CARD,
-    cardType: cType,
-    cardCourse: cCourse,
-    cardDuration: cDuration,
-    cardStartTime: cStartTime
+    cardType,
+    cardCourse,
+    cardDuration,
+    cardDate,
+    cardStartTime
   };
 };
 
-export const editCard = (cKey, newCardDetails) => {
+export const editCard = (
+  cardKey,
+  cardType,
+  cardCourse,
+  cardDuration,
+  cardDate,
+  cardStartTime
+) => {
   return {
     type: EDIT_CARD,
-    cardKey: cKey,
-    newCardDetails
+    cardKey,
+    cardType,
+    cardCourse,
+    cardDuration,
+    cardDate,
+    cardStartTime
   };
 };
 
