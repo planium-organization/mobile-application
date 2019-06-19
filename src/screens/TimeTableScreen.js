@@ -18,10 +18,12 @@ import NewCardModal from "./../modals/ViewComments";
 import {
   showComments,
   tableCurrentDate,
-  addingCardToggle
+  addingCardToggle,
+  setAllCards
 } from "../store/CardsActions";
 
 function areInSameDay(date1, date2) {
+  console.log("tmp");
   const result =
     date1.getFullYear() == date2.getFullYear() &&
     date1.getMonth() == date2.getMonth() &&
@@ -85,6 +87,29 @@ class TimeTableScreen extends Component {
       areInSameDay(cardItem.date, date)
     );
     return result;
+  }
+
+  componentDidMount() {
+    fetch("http://178.63.162.108:8080/api/student/card/2019-06-06/3", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        const result = response.map(item => ({
+          ...item,
+          date: new Date(item.dueDate),
+          key: item.id,
+          duration: 180,
+          course: item.course.title,
+          color: item.course.color
+        }));
+        this.props.setAllCards(result);
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
@@ -225,7 +250,8 @@ const mapDispatchToProps = dispatch =>
     {
       showComments,
       tableCurrentDate,
-      addingCardToggle
+      addingCardToggle,
+      setAllCards
     },
     dispatch
   );

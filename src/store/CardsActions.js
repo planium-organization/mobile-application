@@ -91,3 +91,10 @@ export const addingCardToggle = enable => {
     payload: enable
   };
 };
+
+export const setAllCards = cards => {
+  return {
+    type: "SET_ALL_CARDS",
+    payload: cards
+  };
+};

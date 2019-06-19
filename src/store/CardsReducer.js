@@ -26,42 +26,44 @@ function getCommentsOfDay(day) {
 }
 
 function mapCourseToColor(course) {
-  return courses.find(item => item.identifier === course).color;
+  const result = courses.find(item => item.identifier === course);
+  if (result) return result.color;
+  else return "#000000";
 }
 
 const initialState = {
   cards: [
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Literature",
-      color: mapCourseToColor("Literature"),
-      date: new Date(2019, 5, 15, 12, 15, 0),
-      duration: 75,
-      startTime: true
-    },
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Physics",
-      color: mapCourseToColor("Physics"),
-      date: new Date(2019, 5, 16, 12, 15, 0),
-      duration: 120,
-      startTime: true
-    },
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Physics",
-      color: mapCourseToColor("Physics"),
-      date: new Date(2019, 5, 14),
-      duration: 180,
-      startTime: false
-    }
+    // {
+    //   key: parseInt(Math.random() * 10000),
+    //   type: "todo",
+    //   course: "Literature",
+    //   color: mapCourseToColor("Literature"),
+    //   date: new Date(2019, 5, 15, 12, 15, 0),
+    //   duration: 75,
+    //   startTime: true
+    // },
+    // {
+    //   key: parseInt(Math.random() * 10000),
+    //   type: "todo",
+    //   course: "Physics",
+    //   color: mapCourseToColor("Physics"),
+    //   date: new Date(2019, 5, 16, 12, 15, 0),
+    //   duration: 120,
+    //   startTime: true
+    // },
+    // {
+    //   key: parseInt(Math.random() * 10000),
+    //   type: "todo",
+    //   course: "Physics",
+    //   color: mapCourseToColor("Physics"),
+    //   date: new Date(2019, 5, 14),
+    //   duration: 180,
+    //   startTime: false
+    // }
   ],
   selectedCard: null,
   visibleComments: null,
-  currDate: new Date(),
+  currDate: new Date(2019, 5, 5),
   addingCard: false
 };
 
@@ -141,6 +143,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         addingCard: action.payload
+      };
+    case "SET_ALL_CARDS":
+      return {
+        ...state,
+        cards: action.payload
       };
     default:
       return state;
