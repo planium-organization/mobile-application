@@ -64,7 +64,8 @@ const initialState = {
   selectedCard: null,
   visibleComments: null,
   currDate: new Date(2019, 5, 5),
-  addingCard: false
+  addingCard: false,
+  dayColumnLoading: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -144,9 +145,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         addingCard: action.payload
       };
+    case "RELOAD_ALL_CARDS":
+      return {
+        ...state,
+        dayColumnLoading: 1,
+        cards: []
+      };
     case "SET_ALL_CARDS":
       return {
         ...state,
+        dayColumnLoading: 0,
         cards: action.payload
       };
     default:

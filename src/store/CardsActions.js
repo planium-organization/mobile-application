@@ -98,3 +98,9 @@ export const setAllCards = cards => {
     payload: cards
   };
 };
+
+export const reloadAllCards = () => {
+  return {
+    type: "RELOAD_ALL_CARDS"
+  };
+};

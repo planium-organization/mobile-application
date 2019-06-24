@@ -6,7 +6,9 @@ import {
   Button,
   Modal,
   ScrollView,
-  TouchableNativeFeedback
+  Dimensions,
+  TouchableNativeFeedback,
+  ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -19,7 +21,8 @@ import {
   showComments,
   tableCurrentDate,
   addingCardToggle,
-  setAllCards
+  setAllCards,
+  reloadAllCards
 } from "../store/CardsActions";
 
 function areInSameDay(date1, date2) {
@@ -90,6 +93,7 @@ class TimeTableScreen extends Component {
   }
 
   componentDidMount() {
+    this.props.reloadAllCards();
     fetch("http://178.63.162.108:8080/api/student/card/2019-06-06/3", {
       method: "GET",
       headers: {
@@ -180,24 +184,35 @@ class TimeTableScreen extends Component {
 
         {/* Day columns */}
         <ScrollView style={{ flex: 1 }}>
-          <View style={styles.DayColumnScroll}>
-            {/* columns */}
-            <DayColumn
-              navigation={this.props.navigation}
-              dayCards={this.getDayCards(this.getDateForColumn(0))}
-              date={this.getDateForColumn(0)}
-            />
-            <DayColumn
-              navigation={this.props.navigation}
-              dayCards={this.getDayCards(this.getDateForColumn(1))}
-              date={this.getDateForColumn(1)}
-            />
-            <DayColumn
-              navigation={this.props.navigation}
-              dayCards={this.getDayCards(this.getDateForColumn(2))}
-              date={this.getDateForColumn(2)}
-            />
-          </View>
+          {this.props.dayColumnLoading === 1 ? (
+            <View style={{ flex: 1 }}>
+              <ActivityIndicator
+                style={{ margin: 40 }}
+                size="large"
+                color="#0000ff"
+              />
+            </View>
+          ) : (
+            <View style={styles.DayColumnScroll}>
+              <DayColumn
+                navigation={this.props.navigation}
+                dayCards={this.getDayCards(this.getDateForColumn(0))}
+                date={this.getDateForColumn(0)}
+              />
+              <DayColumn
+                navigation={this.props.navigation}
+                dayCards={this.getDayCards(this.getDateForColumn(1))}
+                date={this.getDateForColumn(1)}
+              />
+              <DayColumn
+                navigation={this.props.navigation}
+                dayCards={this.getDayCards(this.getDateForColumn(2))}
+                date={this.getDateForColumn(2)}
+              />
+            </View>
+          )}
+
+          {/* </View> */}
         </ScrollView>
 
         <ViewCommentsModal />
@@ -241,7 +256,8 @@ const mapStateToProps = state => {
   return {
     cards: state.cards.cards,
     currDate: state.cards.currDate,
-    addingCard: state.cards.addingCard
+    addingCard: state.cards.addingCard,
+    dayColumnLoading: state.cards.dayColumnLoading
   };
 };
 
@@ -251,7 +267,8 @@ const mapDispatchToProps = dispatch =>
       showComments,
       tableCurrentDate,
       addingCardToggle,
-      setAllCards
+      setAllCards,
+      reloadAllCards
     },
     dispatch
   );
