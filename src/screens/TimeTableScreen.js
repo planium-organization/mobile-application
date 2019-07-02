@@ -21,8 +21,9 @@ import {
   showComments,
   tableCurrentDate,
   addingCardToggle,
-  setAllCards,
-  reloadAllCards
+  getCardsPending,
+  getCardsFulfilled,
+  getCardsRejected
 } from "../store/CardsActions";
 
 function areInSameDay(date1, date2) {
@@ -92,14 +93,15 @@ class TimeTableScreen extends Component {
     return result;
   }
 
-  componentDidMount() {
-    this.props.reloadAllCards();
+  fetchCards() {
+    this.props.getCardsPending();
     fetch("http://178.63.162.108:8080/api/student/card/2019-06-06/3", {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
-      }
+      },
+      timeout: 7000
     })
       .then(response => response.json())
       .then(response => {
@@ -111,12 +113,36 @@ class TimeTableScreen extends Component {
           course: item.course.title,
           color: item.course.color
         }));
-        this.props.setAllCards(result);
+        this.props.getCardsFulfilled(result);
       })
-      .catch(err => console.error(err));
+      .catch(err => this.props.getCardsRejected(err.toString()));
+  }
+
+  componentDidMount() {
+    this.fetchCards();
+    setInterval(() => {
+      this.fetchCards();
+    }, 10000);
   }
 
   render() {
+    let loadingBar;
+
+    if (this.props.cardsLoading === true) {
+      loadingBar = (
+        <View style={{ height: 40, flexDirection: "row", backgroundColor: "#eeeeee" }}>
+          <ActivityIndicator
+            style={{ margin: 5, marginLeft: 10, width: 30 }}
+            size="large"
+            color="#0000ff"
+          />
+          <View style={{ justifyContent: "center", marginLeft: 10 }}>
+            <Text>Loading</Text>
+          </View>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.main}>
         {/* Column Capital */}
@@ -184,36 +210,28 @@ class TimeTableScreen extends Component {
 
         {/* Day columns */}
         <ScrollView style={{ flex: 1 }}>
-          {this.props.dayColumnLoading === 1 ? (
-            <View style={{ flex: 1 }}>
-              <ActivityIndicator
-                style={{ margin: 40 }}
-                size="large"
-                color="#0000ff"
-              />
-            </View>
-          ) : (
-            <View style={styles.DayColumnScroll}>
-              <DayColumn
-                navigation={this.props.navigation}
-                dayCards={this.getDayCards(this.getDateForColumn(0))}
-                date={this.getDateForColumn(0)}
-              />
-              <DayColumn
-                navigation={this.props.navigation}
-                dayCards={this.getDayCards(this.getDateForColumn(1))}
-                date={this.getDateForColumn(1)}
-              />
-              <DayColumn
-                navigation={this.props.navigation}
-                dayCards={this.getDayCards(this.getDateForColumn(2))}
-                date={this.getDateForColumn(2)}
-              />
-            </View>
-          )}
+          <View style={styles.DayColumnScroll}>
+            <DayColumn
+              navigation={this.props.navigation}
+              dayCards={this.getDayCards(this.getDateForColumn(0))}
+              date={this.getDateForColumn(0)}
+            />
+            <DayColumn
+              navigation={this.props.navigation}
+              dayCards={this.getDayCards(this.getDateForColumn(1))}
+              date={this.getDateForColumn(1)}
+            />
+            <DayColumn
+              navigation={this.props.navigation}
+              dayCards={this.getDayCards(this.getDateForColumn(2))}
+              date={this.getDateForColumn(2)}
+            />
+          </View>
 
           {/* </View> */}
         </ScrollView>
+
+        {loadingBar}
 
         <ViewCommentsModal />
       </View>
@@ -257,7 +275,8 @@ const mapStateToProps = state => {
     cards: state.cards.cards,
     currDate: state.cards.currDate,
     addingCard: state.cards.addingCard,
-    dayColumnLoading: state.cards.dayColumnLoading
+    dayColumnLoading: state.cards.dayColumnLoading,
+    cardsLoading: state.cards.cardsLoading
   };
 };
 
@@ -267,8 +286,9 @@ const mapDispatchToProps = dispatch =>
       showComments,
       tableCurrentDate,
       addingCardToggle,
-      setAllCards,
-      reloadAllCards
+      getCardsPending,
+      getCardsFulfilled,
+      getCardsRejected
     },
     dispatch
   );
