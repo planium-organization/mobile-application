@@ -2,45 +2,41 @@ import React, { Component } from "react";
 import { Button, View, Text, Dimensions } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { ScrollView } from "react-native-gesture-handler";
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-} from 'react-native-chart-kit'
+import {PieChart} from 'react-native-chart-kit'
+import BarChart from '../Components/BarChart'
+
+
 const screenWidth = Dimensions.get('window').width
 
 class AnalysisScreen extends Component {
 
     static navigationOptions = {
-        headerTitle: (
-            <View
-                style={{
-                    flex: 1,
-                    margin: 5,
-                    flexDirection: "row"
-                }}
-                >
-                <View style={{ width: 100 }}>
-                    <Button style={{}} title="Prev" onPress={() => { }} />
-                </View>
-                <Text
-                    style={{
-                        flex: 1,
-                        fontSize: 16,
-                        textAlignVertical: "center",
-                        textAlign: "center"
-                    }}
-                >
-                    Time Table
-                </Text>
-                <View style={{ width: 100 }}>
-                    <Button style={{}} title="Next" onPress={() => { }} />
-                </View>
-            </View>
-        )
+        // headerTitle: (
+        //     <View
+        //         style={{
+        //             flex: 1,
+        //             margin: 5,
+        //             flexDirection: "row"
+        //         }}
+        //         >
+        //         <View style={{ width: 100 }}>
+        //             <Button style={{}} title="Prev" onPress={() => { }} />
+        //         </View>
+        //         <Text
+        //             style={{
+        //                 flex: 1,
+        //                 fontSize: 16,
+        //                 textAlignVertical: "center",
+        //                 textAlign: "center"
+        //             }}
+        //         >
+        //             Time Table
+        //         </Text>
+        //         <View style={{ width: 100 }}>
+        //             <Button style={{}} title="Next" onPress={() => { }} />
+        //         </View>
+        //     </View>
+        // )
     };
     render() {
         const data = [
@@ -74,7 +70,23 @@ class AnalysisScreen extends Component {
                        
                     </View>
                     <View>
-                        <Text>bar charts goes here</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                        </View>
+
+                        
                     </View>
                 </ScrollView>
             </View>
