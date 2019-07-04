@@ -10,7 +10,9 @@ import {
   ADDING_CARD,
   GET_CARDS_FULFILLED,
   GET_CARDS_PENDING,
-  GET_CARDS_REJECTED
+  GET_CARDS_REJECTED,
+  GO_TABLE_NEXT,
+  GO_TABLE_PREV
 } from "./ActionTypes";
 
 export const addCard = (
@@ -128,5 +130,17 @@ export const getCardsRejected = err => {
     type: GET_CARDS_REJECTED,
     error: err,
     cardsLoading: false
+  };
+};
+
+export const goTableNext = () => {
+  return {
+    type: GO_TABLE_NEXT
+  };
+};
+
+export const goTablePrev = () => {
+  return {
+    type: GO_TABLE_PREV
   };
 };

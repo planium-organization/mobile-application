@@ -10,7 +10,9 @@ import {
   ADDING_CARD,
   GET_CARDS_PENDING,
   GET_CARDS_FULFILLED,
-  GET_CARDS_REJECTED
+  GET_CARDS_REJECTED,
+  GO_TABLE_NEXT,
+  GO_TABLE_PREV
 } from "./ActionTypes";
 
 import { courses } from "./../res/colors";
@@ -38,7 +40,7 @@ const initialState = {
   cards: [],
   selectedCard: null,
   visibleComments: null,
-  currDate: new Date(2019, 5, 5),
+  currDate: new Date(2019, 10, 12),
   addingCard: false,
   errorMessage: "",
   cardsLoading: false
@@ -163,6 +165,20 @@ const reducer = (state = initialState, action) => {
         ...state,
         cardsLoading: action.cardsLoading,
         errorMessage: action.error
+      };
+    case GO_TABLE_NEXT:
+      const tmpDateNext = state.currDate;
+      tmpDateNext.setDate(tmpDateNext.getDate() + 3);
+      return {
+        ...state,
+        currDate: tmpDate
+      };
+    case GO_TABLE_PREV:
+      const tmpDatePrev = state.currDate;
+      tmpDatePrev.setDate(tmpDatePrev.getDate() + 3);
+      return {
+        ...state,
+        currDate: tmpDate
       };
     default:
       return state;

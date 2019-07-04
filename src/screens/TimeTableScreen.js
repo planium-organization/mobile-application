@@ -23,7 +23,9 @@ import {
   addingCardToggle,
   getCardsPending,
   getCardsFulfilled,
-  getCardsRejected
+  getCardsRejected,
+  goTableNext,
+  goTablePrev
 } from "../store/CardsActions";
 
 function areInSameDay(date1, date2) {
@@ -37,32 +39,7 @@ function areInSameDay(date1, date2) {
 
 class TimeTableScreen extends Component {
   static navigationOptions = {
-    headerTitle: (
-      <View
-        style={{
-          flex: 1,
-          margin: 5,
-          flexDirection: "row"
-        }}
-      >
-        <View style={{ width: 100 }}>
-          <Button style={{}} title="Prev" onPress={() => {}} />
-        </View>
-        <Text
-          style={{
-            flex: 1,
-            fontSize: 16,
-            textAlignVertical: "center",
-            textAlign: "center"
-          }}
-        >
-          Time Table
-        </Text>
-        <View style={{ width: 100 }}>
-          <Button style={{}} title="Next" onPress={() => {}} />
-        </View>
-      </View>
-    )
+    header: null
   };
 
   getDateForColumn(columnIndex) {
@@ -95,14 +72,21 @@ class TimeTableScreen extends Component {
 
   fetchCards() {
     this.props.getCardsPending();
-    fetch("http://178.63.162.108:8080/api/student/card/2019-06-06/3", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      timeout: 7000
-    })
+
+    const year = 1900 + this.props.currDate.getYear();
+    const month = 1 + this.props.currDate.getMonth();
+    const day = this.props.currDate.getDate();
+    fetch(
+      `http://178.63.162.108:8080/api/student/card/${year}-${month}-${day}/3`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        timeout: 7000
+      }
+    )
       .then(response => response.json())
       .then(response => {
         const result = response.map(item => ({
@@ -130,7 +114,13 @@ class TimeTableScreen extends Component {
 
     if (this.props.cardsLoading === true) {
       loadingBar = (
-        <View style={{ height: 40, flexDirection: "row", backgroundColor: "#eeeeee" }}>
+        <View
+          style={{
+            height: 40,
+            flexDirection: "row",
+            backgroundColor: "#eeeeee"
+          }}
+        >
           <ActivityIndicator
             style={{ margin: 5, marginLeft: 10, width: 30 }}
             size="large"
@@ -145,6 +135,15 @@ class TimeTableScreen extends Component {
 
     return (
       <View style={styles.main}>
+        <View
+          style={{
+            height: 40,
+            borderColor: "black",
+            borderBottomWidth: 1,
+            flexDirection: "row"
+          }}
+        >
+        </View>
         {/* Column Capital */}
         <View style={styles.ColumnCapital}>
           <View style={styles.ColumnCapitalBox}>
@@ -288,7 +287,9 @@ const mapDispatchToProps = dispatch =>
       addingCardToggle,
       getCardsPending,
       getCardsFulfilled,
-      getCardsRejected
+      getCardsRejected,
+      goTableNext,
+      goTablePrev
     },
     dispatch
   );
