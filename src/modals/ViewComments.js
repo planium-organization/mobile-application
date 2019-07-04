@@ -14,14 +14,22 @@ import { bindActionCreators } from "redux";
 
 import { showComments, hideComments } from "../store/CardsActions";
 
+
 class ViewCommentsModal extends Component {
+  componentDidMount() {
+    return fetch('http://178.63.162.108:8080/api/student/comment/2019-11-11/0/100')
+      .then((response) => response.json())
+        .then((resJson) => {
+          this.setState({ content: resJson });
+        })  
+  }
   render() {
-    const comments = [];
-    if (this.props.visibleComments != null) {
-      this.props.visibleComments.forEach(element => {
+        const comments = [];
+    if (this.state != null) {
+      this.state.content.forEach(element => {
         comments.push(
           <View
-            key={element.key}
+            key={element.id}
             style={{
               transform: [{ scaleY: -1 }],
               padding: 5,
@@ -38,7 +46,7 @@ class ViewCommentsModal extends Component {
             />
             <View style={{ marginLeft: 5, flex: 1 }}>
               <Text>
-                {element.owner}
+                {element.studentId}
                 {"\t"}
                 <Text style={{ fontSize: 10 }}>
                   {element.date.toLocaleString("en-US", {
