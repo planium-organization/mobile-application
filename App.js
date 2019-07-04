@@ -10,7 +10,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import ChannelScreen from "./src/screens/ChannelScreen";
 import TimeTableScreen from "./src/screens/TimeTableScreen";
-import AnalysisScreen from "./src/screens/profileScreen";
+import AnalysisScreen from "./src/screens/AnalysisScreen";
 import CardEditScreen from "./src/screens/CardEditScreen";
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
