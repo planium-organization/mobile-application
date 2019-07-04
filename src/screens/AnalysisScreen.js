@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { Button, View, Text, Dimensions } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { ScrollView } from "react-native-gesture-handler";
-import {PieChart} from 'react-native-chart-kit'
-import BarChart from '../Components/BarChart'
+import {PieChart} from 'react-native-chart-kit';
+import BarChart from '../Components/BarChart';
+import NavBar from '../Components/NavBar';
 
 
 const screenWidth = Dimensions.get('window').width
@@ -53,7 +54,8 @@ class AnalysisScreen extends Component {
             //strokeWidth: 2 // optional, default 3
         }
         return (
-            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" , flexDirection:'column'}}>
+                <NavBar title={'This Week'} prevFunc={() => {}} nextFunc={() => {}}/>
                 <ScrollView style={{ flex: 2 , borderColor:"#000"}} >
                     <View style={{paddingLeft:5,paddingRight:5,paddingTop:5,paddingBottom:5}}>
                         <PieChart
@@ -71,19 +73,19 @@ class AnalysisScreen extends Component {
                     </View>
                     <View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='blue' secondColor='skyblue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
-                            <BarChart color='red' secondColor='blue' percent={30} >biology</BarChart>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
+                            <BarChart color='red' secondColor='skyblue' percent={30} >biology</BarChart>
                         </View>
 
                         

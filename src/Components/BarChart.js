@@ -5,7 +5,7 @@ class BarChart extends Component {
    
     render() {
         return (
-            <View style={{ width: 77, height: 106, borderWidth: 2, margin: 5 , padding:1, zIndex:0}}>
+            <View style={{ width: 77, height: 106, margin: 5 , padding:1, zIndex:0}}>
 
                 
                 <View style={{ 
