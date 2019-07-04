@@ -33,14 +33,18 @@ class BarChart extends Component {
                     <View style={{
                         backgroundColor: this.props.color,
                         width: '100%',
-                        height: this.props.percent
+                        height: this.props.percent,
+                        borderTopLeftRadius:4,
+                        borderTopRightRadius:4
                     }}>
 
                     </View>
                     <View style={{
                         backgroundColor: this.props.secondColor,
                         width: '100%',
-                        height: 100-this.props.percent
+                        height: 100-this.props.percent,
+                        borderBottomLeftRadius:4,
+                        borderBottomRightRadius:4
                     }}>
 
                     </View>

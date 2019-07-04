@@ -71,6 +71,7 @@ class AnalysisScreen extends Component {
                         />
                        
                     </View>
+                    
                     <View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
                             <BarChart color='blue' secondColor='skyblue' percent={30} >biology</BarChart>
