@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Button,
+  ActivityIndicator
+} from "react-native";
 import Card from "./Card";
 import { addingCardToggle, selectCard } from "./../store/CardsActions";
 import { connect } from "react-redux";
@@ -18,7 +25,7 @@ class DayColumn extends Component {
       );
     });
 
-    return (
+    let viewTotal = (
       <View style={styles.DayColumnStyle}>
         {cards}
         <View style={{ margin: 3 }}>
@@ -26,12 +33,17 @@ class DayColumn extends Component {
             title="+"
             onPress={() => {
               this.props.selectCard(null);
-              this.props.navigation.push("CardEdit", { newCard: true, newCardDate: this.props.date });
+              this.props.navigation.push("CardEdit", {
+                newCard: true,
+                newCardDate: this.props.date
+              });
             }}
           />
         </View>
       </View>
     );
+
+    return viewTotal;
   }
 }
 
@@ -45,7 +57,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    dayColumnLoading: state.dayColumnLoading
+  };
 };
 
 const mapDispatchToProps = dispatch =>

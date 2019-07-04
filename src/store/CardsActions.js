@@ -7,7 +7,12 @@ import {
   SHOW_COMMENTS,
   HIDE_COMMENTS,
   TABLE_CURRENT_DATE,
-  ADDING_CARD
+  ADDING_CARD,
+  GET_CARDS_FULFILLED,
+  GET_CARDS_PENDING,
+  GET_CARDS_REJECTED,
+  GO_TABLE_NEXT,
+  GO_TABLE_PREV
 } from "./ActionTypes";
 
 export const addCard = (
@@ -89,5 +94,53 @@ export const addingCardToggle = enable => {
   return {
     type: ADDING_CARD,
     payload: enable
+  };
+};
+
+export const setAllCards = cards => {
+  return {
+    type: "SET_ALL_CARDS",
+    payload: cards
+  };
+};
+
+export const reloadAllCards = () => {
+  return {
+    type: "RELOAD_ALL_CARDS"
+  };
+};
+
+export const getCardsPending = () => {
+  return {
+    type: GET_CARDS_PENDING,
+    cardsLoading: true
+  };
+};
+
+export const getCardsFulfilled = fetchedCards => {
+  return {
+    type: GET_CARDS_FULFILLED,
+    payload: fetchedCards,
+    cardsLoading: false
+  };
+};
+
+export const getCardsRejected = err => {
+  return {
+    type: GET_CARDS_REJECTED,
+    error: err,
+    cardsLoading: false
+  };
+};
+
+export const goTableNext = () => {
+  return {
+    type: GO_TABLE_NEXT
+  };
+};
+
+export const goTablePrev = () => {
+  return {
+    type: GO_TABLE_PREV
   };
 };

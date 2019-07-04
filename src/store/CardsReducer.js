@@ -7,7 +7,12 @@ import {
   SHOW_COMMENTS,
   HIDE_COMMENTS,
   TABLE_CURRENT_DATE,
-  ADDING_CARD
+  ADDING_CARD,
+  GET_CARDS_PENDING,
+  GET_CARDS_FULFILLED,
+  GET_CARDS_REJECTED,
+  GO_TABLE_NEXT,
+  GO_TABLE_PREV
 } from "./ActionTypes";
 
 import { courses } from "./../res/colors";
@@ -26,48 +31,50 @@ function getCommentsOfDay(day) {
 }
 
 function mapCourseToColor(course) {
-  return courses.find(item => item.identifier === course).color;
+  const result = courses.find(item => item.identifier === course);
+  if (result) return result.color;
+  else return "#000000";
 }
 
 const initialState = {
-  cards: [
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Literature",
-      color: mapCourseToColor("Literature"),
-      date: new Date(2019, 5, 15, 12, 15, 0),
-      duration: 75,
-      startTime: true
-    },
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Physics",
-      color: mapCourseToColor("Physics"),
-      date: new Date(2019, 5, 16, 12, 15, 0),
-      duration: 120,
-      startTime: true
-    },
-    {
-      key: parseInt(Math.random() * 10000),
-      type: "todo",
-      course: "Physics",
-      color: mapCourseToColor("Physics"),
-      date: new Date(2019, 5, 14),
-      duration: 180,
-      startTime: false
-    }
-  ],
+  cards: [],
   selectedCard: null,
   visibleComments: null,
-  currDate: new Date(),
-  addingCard: false
+  currDate: new Date(2019, 10, 12),
+  addingCard: false,
+  errorMessage: "",
+  cardsLoading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CARD:
+      fetch("http://178.63.162.108:8080/api/student/card", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          course: {
+            title: action.cardCourse,
+            color: mapCourseToColor(action.cardCourse)
+          },
+          duration: action.cardDuration.toString(),
+          startTime: action.cardStartTime
+            ? action.cardDate.toISOString()
+            : null,
+          dueDate: action.cardDate.toISOString(),
+          description: "no description"
+        })
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          return console.warn(responseJson);
+        })
+        .catch(error => {
+          // console.warn(error);
+        });
       return {
         ...state,
         cards: [
@@ -141,6 +148,37 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         addingCard: action.payload
+      };
+    case GET_CARDS_PENDING:
+      return {
+        ...state,
+        cardsLoading: action.cardsLoading
+      };
+    case GET_CARDS_FULFILLED:
+      return {
+        ...state,
+        cardsLoading: action.cardsLoading,
+        cards: action.payload
+      };
+    case GET_CARDS_REJECTED:
+      return {
+        ...state,
+        cardsLoading: action.cardsLoading,
+        errorMessage: action.error
+      };
+    case GO_TABLE_NEXT:
+      const tmpDateNext = state.currDate;
+      tmpDateNext.setDate(tmpDateNext.getDate() + 3);
+      return {
+        ...state,
+        currDate: tmpDate
+      };
+    case GO_TABLE_PREV:
+      const tmpDatePrev = state.currDate;
+      tmpDatePrev.setDate(tmpDatePrev.getDate() + 3);
+      return {
+        ...state,
+        currDate: tmpDate
       };
     default:
       return state;
