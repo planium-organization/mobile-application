@@ -8,10 +8,12 @@ import {
 } from "react-navigation";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import ChannelScreen from "./src/screens/ChannelScreen";
 import TimeTableScreen from "./src/screens/TimeTableScreen";
-import AnalysisScreen from "./src/screens/AnalysisScreen";
 import CardEditScreen from "./src/screens/CardEditScreen";
+import AnalysisScreen from "./src/screens/AnalysisScreen";
+import ChannelScreen from "./src/screens/ChannelScreen";
+import ProfileScreen from "./src/screens/profileScreen";
+
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
 import SignUpScreen from "./src/screens/Auth/SignUp";
@@ -27,11 +29,16 @@ const TimeTableNavigator = createStackNavigator(
   }
 );
 
+const profileScreenNavigation = createStackNavigator({
+  ProfileDetails: { screen: ProfileScreen }
+});
+
 const AppTabNavigator = createBottomTabNavigator(
   {
-    TimeTable: TimeTableNavigator ,
+    TimeTable: TimeTableNavigator,
     Analysis: { screen: AnalysisScreen },
-    Channels: { screen: ChannelScreen }
+    Channels: { screen: ChannelScreen },
+    Profile: profileScreenNavigation
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
