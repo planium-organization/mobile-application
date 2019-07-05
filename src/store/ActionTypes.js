@@ -1,3 +1,4 @@
+// CardReducer
 export const ADD_CARD = "ADD_PLACE";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_PLACE";
@@ -14,3 +15,6 @@ export const GET_CARDS_REJECTED = "GET_CARDS_REJECTED";
 
 export const GO_TABLE_NEXT = "GO_TABLE_NEXT";
 export const GO_TABLE_PREV = "GO_TABLE_PREV";
+
+// ProfileReducer
+export const GET_COURSES_FULFILLED = "GET_COURSES_FULFILLED";

@@ -13,6 +13,7 @@ import CardEditScreen from "./src/screens/CardEditScreen";
 import AnalysisScreen from "./src/screens/AnalysisScreen";
 import ChannelScreen from "./src/screens/ChannelScreen";
 import ProfileScreen from "./src/screens/profileScreen";
+import CourseViewScreen from "./src/screens/CourseViewScreen";
 
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
@@ -30,7 +31,8 @@ const TimeTableNavigator = createStackNavigator(
 );
 
 const profileScreenNavigation = createStackNavigator({
-  ProfileDetails: { screen: ProfileScreen }
+  ProfileDetails: { screen: ProfileScreen },
+  CourseView: {screen: CourseViewScreen}
 });
 
 const AppTabNavigator = createBottomTabNavigator(
@@ -43,6 +45,7 @@ const AppTabNavigator = createBottomTabNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        // find icons here https://materialdesignicons.com/
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
@@ -56,6 +59,10 @@ const AppTabNavigator = createBottomTabNavigator(
           }
           case "Channels": {
             iconName = "forum";
+            break;
+          }
+          case "Profile": {
+            iconName = "account-badge-horizontal";
             break;
           }
         }
