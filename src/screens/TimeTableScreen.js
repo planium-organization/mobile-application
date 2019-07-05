@@ -107,7 +107,7 @@ class TimeTableScreen extends Component {
           Accept: "application/json",
           "Content-Type": "application/json"
         },
-        timeout: 7000
+        timeout: 5000
       }
     )
       .then(response => response.json())

@@ -224,6 +224,7 @@ class CardEditScreen extends Component {
         this.state.selectedCard.startTime
       );
     } else {
+      this.editExisitngCard();
       this.props.editCard(
         this.state.selectedCard.key,
         this.state.selectedCard.type,
@@ -259,6 +260,41 @@ class CardEditScreen extends Component {
       .then(response => {
         if (!response.ok) {
           alert(`could not create new card on server: ${response.statusText}`);
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
+  }
+
+  editExisitngCard() {
+    const selCard = this.state.selectedCard;
+    const selDateStr = dateToStandard(this.state.selectedCard.date);
+
+    fetch(`http://178.63.162.108:8080/api/student/card/${selCard.key}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        course: {
+          title: this.state.selectedCard.course,
+          color: "#000000"
+        },
+        duration: minutesToHourStr(this.state.selectedCard.duration),
+        startTime: this.state.selectedCard.startTime ? selDateStr : null,
+        dueDate: selDateStr,
+        description: "no description"
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          alert(
+            `could not edit card ${selCard.key} on server: ${
+              response.statusText
+            }`
+          );
         }
       })
       .catch(error => {
