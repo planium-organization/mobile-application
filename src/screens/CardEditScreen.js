@@ -12,6 +12,18 @@ import {
 
 import { courses } from "./../res/colors";
 
+function dateToStandard(inp) {
+  return `${inp.getFullYear()}-${inp.getMonth() + 1}-${inp.getDate()}T${
+    inp.toTimeString().split(" ")[0]
+  }`;
+}
+
+function minutesToHourStr(minutes) {
+  let h = Math.floor(minutes / 60);
+  let m = minutes % 60;
+  return `${h}:${m}`;
+}
+
 class CardEditScreen extends Component {
   static navigationOptions = {
     tabBarVisible: false,
@@ -192,36 +204,102 @@ class CardEditScreen extends Component {
           <View style={{ flex: 1, margin: 5 }}>
             <Button
               title="Close and Save"
-              onPress={() => {
-                const newCard = this.props.navigation.getParam(
-                  "newCard",
-                  false
-                );
-                if (newCard) {
-                  this.props.addCard(
-                    this.state.selectedCard.type,
-                    this.state.selectedCard.course,
-                    this.state.selectedCard.duration,
-                    this.state.selectedCard.date,
-                    this.state.selectedCard.startTime
-                  );
-                } else {
-                  this.props.editCard(
-                    this.state.selectedCard.key,
-                    this.state.selectedCard.type,
-                    this.state.selectedCard.course,
-                    this.state.selectedCard.duration,
-                    this.state.selectedCard.date,
-                    this.state.selectedCard.startTime
-                  );
-                }
-                this.props.navigation.goBack();
-              }}
+              onPress={() => this.onPressCloseSave()}
             />
           </View>
         </View>
       </View>
     );
+  }
+
+  onPressCloseSave() {
+    const newCard = this.props.navigation.getParam("newCard", false);
+    if (newCard) {
+      this.addNewCard();
+      this.props.addCard(
+        this.state.selectedCard.type,
+        this.state.selectedCard.course,
+        this.state.selectedCard.duration,
+        this.state.selectedCard.date,
+        this.state.selectedCard.startTime
+      );
+    } else {
+      this.editExisitngCard();
+      this.props.editCard(
+        this.state.selectedCard.key,
+        this.state.selectedCard.type,
+        this.state.selectedCard.course,
+        this.state.selectedCard.duration,
+        this.state.selectedCard.date,
+        this.state.selectedCard.startTime
+      );
+    }
+    this.props.navigation.goBack();
+  }
+
+  addNewCard() {
+    const selDateStr = dateToStandard(this.state.selectedCard.date);
+
+    fetch("http://178.63.162.108:8080/api/student/card", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        course: {
+          title: this.state.selectedCard.course,
+          color: "#000000"
+        },
+        duration: minutesToHourStr(this.state.selectedCard.duration),
+        startTime: this.state.selectedCard.startTime ? selDateStr : null,
+        dueDate: selDateStr,
+        description: "no description"
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          alert(`could not create new card on server: ${response.statusText}`);
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
+  }
+
+  editExisitngCard() {
+    const selCard = this.state.selectedCard;
+    const selDateStr = dateToStandard(this.state.selectedCard.date);
+
+    fetch(`http://178.63.162.108:8080/api/student/card/${selCard.key}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        course: {
+          title: this.state.selectedCard.course,
+          color: "#000000"
+        },
+        duration: minutesToHourStr(this.state.selectedCard.duration),
+        startTime: this.state.selectedCard.startTime ? selDateStr : null,
+        dueDate: selDateStr,
+        description: "no description"
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          alert(
+            `could not edit card ${selCard.key} on server: ${
+              response.statusText
+            }`
+          );
+        }
+      })
+      .catch(error => {
+        alert(error);
+      });
   }
 }
 

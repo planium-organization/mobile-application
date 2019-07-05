@@ -29,12 +29,20 @@ import {
 } from "../store/CardsActions";
 
 function areInSameDay(date1, date2) {
-  console.log("tmp");
   const result =
     date1.getFullYear() == date2.getFullYear() &&
     date1.getMonth() == date2.getMonth() &&
     date1.getDay() == date2.getDay();
   return result;
+}
+
+function timeStrToMinutes(timeStr) {
+  let hours = timeStr.split(":")[0];
+  let minutes = timeStr.split(":")[1];
+  hours = Number.parseInt(hours);
+  minutes = Number.parseInt(minutes);
+  const total = hours * 60 + minutes;
+  return total < 360 ? total : 360;
 }
 
 class TimeTableScreen extends Component {
@@ -70,21 +78,36 @@ class TimeTableScreen extends Component {
     return result;
   }
 
+  lastCardFetch = undefined;
+
   fetchCards() {
+    // no fetchCard more frequent than one per 5 seconds
+    if (
+      this.lastCardFetch !== undefined &&
+      (Date.now() - this.lastCardFetch).getSeconds() < 5
+    )
+      return;
+    if (this.props.cardsLoading) return;
+    lastCardFetch = Date.now();
+
     this.props.getCardsPending();
 
-    const year = 1900 + this.props.currDate.getYear();
-    const month = 1 + this.props.currDate.getMonth();
-    const day = this.props.currDate.getDate();
+    let tmpDate = new Date(this.props.currDate);
+    // fetch from 3 days before to three days after current shown cards
+    tmpDate.setDate(tmpDate.getDate() - 3);
+
+    const year = 1900 + tmpDate.getYear();
+    const month = 1 + tmpDate.getMonth();
+    const day = tmpDate.getDate();
     fetch(
-      `http://178.63.162.108:8080/api/student/card/${year}-${month}-${day}/3`,
+      `http://178.63.162.108:8080/api/student/card/${year}-${month}-${day}/9`,
       {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
         },
-        timeout: 7000
+        timeout: 5000
       }
     )
       .then(response => response.json())
@@ -93,7 +116,7 @@ class TimeTableScreen extends Component {
           ...item,
           date: new Date(item.dueDate),
           key: item.id,
-          duration: 180,
+          duration: timeStrToMinutes(item.duration),
           course: item.course.title,
           color: item.course.color
         }));
@@ -107,6 +130,16 @@ class TimeTableScreen extends Component {
     setInterval(() => {
       this.fetchCards();
     }, 10000);
+  }
+
+  onPressNext() {
+    this.props.goTableNext();
+    this.fetchCards();
+  }
+
+  onPressPrev() {
+    this.props.goTablePrev();
+    this.fetchCards();
   }
 
   render() {
@@ -137,12 +170,24 @@ class TimeTableScreen extends Component {
       <View style={styles.main}>
         <View
           style={{
-            height: 40,
+            height: 50,
             borderColor: "black",
             borderBottomWidth: 1,
-            flexDirection: "row"
+            flexDirection: "row",
+            justifyContent: "space-between"
           }}
         >
+          <View style={{ margin: 5 }}>
+            <Button title="Prev" onPress={() => this.onPressPrev()} />
+          </View>
+          <View style={{ justifyContent: "center" }}>
+            <Text style={{ fontSize: 16, color: "black", fontWeight: "bold" }}>
+              Time Table
+            </Text>
+          </View>
+          <View style={{ margin: 5 }}>
+            <Button title="Next" onPress={() => this.onPressNext()} />
+          </View>
         </View>
         {/* Column Capital */}
         <View style={styles.ColumnCapital}>

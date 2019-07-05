@@ -6,6 +6,8 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+package-lock.json
+
 .DS_Store
 
 # Xcode
