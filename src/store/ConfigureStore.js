@@ -1,11 +1,11 @@
 import { createStore, combineReducers } from 'redux';
 
 import cardReducer from './CardsReducer';
-import postReducer from './PostReducer';
+import ProfileReducer from './ProfileReducer';
 
 const rootReducer = combineReducers({
     cards: cardReducer,
-    posts: postReducer
+    profile: ProfileReducer
 });
 
 const configureStore = () => {

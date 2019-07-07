@@ -49,32 +49,6 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_CARD:
-      fetch("http://178.63.162.108:8080/api/student/card", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          course: {
-            title: action.cardCourse,
-            color: mapCourseToColor(action.cardCourse)
-          },
-          duration: action.cardDuration.toString(),
-          startTime: action.cardStartTime
-            ? action.cardDate.toISOString()
-            : null,
-          dueDate: action.cardDate.toISOString(),
-          description: "no description"
-        })
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          return console.warn(responseJson);
-        })
-        .catch(error => {
-          // console.warn(error);
-        });
       return {
         ...state,
         cards: [
@@ -171,14 +145,14 @@ const reducer = (state = initialState, action) => {
       tmpDateNext.setDate(tmpDateNext.getDate() + 3);
       return {
         ...state,
-        currDate: tmpDate
+        currDate: tmpDateNext
       };
     case GO_TABLE_PREV:
       const tmpDatePrev = state.currDate;
-      tmpDatePrev.setDate(tmpDatePrev.getDate() + 3);
+      tmpDatePrev.setDate(tmpDatePrev.getDate() - 3);
       return {
         ...state,
-        currDate: tmpDate
+        currDate: tmpDatePrev
       };
     default:
       return state;
