@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, View, Text, ScrollView } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { View, ScrollView } from "react-native";
+import { Text, Card, ListItem, Button, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -8,6 +8,12 @@ import { getCoursesFulfilled } from "./../store/ProfileActions";
 
 class CourseViewScreen extends Component {
   componentWillMount() {
+    setInterval(() => {
+      this.onFetchCourses();
+    }, 10000);
+  }
+
+  onFetchCourses() {
     fetch(`http://178.63.162.108:8080/api/student/course/`, {
       method: "GET",
       headers: {
@@ -36,55 +42,66 @@ class CourseViewScreen extends Component {
   }
 
   render() {
-    let courses = [];
-
-    this.props.courses.forEach((value, index) => {
-      courses.push(
+    return (
+      <View>
         <View
-          key={value.id}
           style={{
-            borderColor: "black",
-            borderWidth: 1,
-            width: "100%",
             flexDirection: "row",
-            padding: 7
+            alignItems: "center",
+            marginLeft: 15,
+            marginRight: 15,
+            marginTop: 15
           }}
         >
-          <View
-            style={{
-              backgroundColor: value.color,
-              height: 30,
-              width: 30,
-              borderRadius: 15,
-              padding: 7
+          <Text style={{ flex: 1, fontSize: 18 }}>
+            {this.props.courses.length} Courses
+          </Text>
+          <Button
+            title="New Course"
+            type="outline"
+            onPress={() => {
+              this.props.navigation.push("CourseEdit", {
+                courseId: "-1",
+                newCourse: true
+              });
             }}
           />
-          <Text
-            style={{
-              fontSize: 18,
-              color: "black",
-              flex: 1,
-              paddingLeft: 10,
-              paddingRight: 10
-            }}
-          >
-            {index} - {value.title}
-          </Text>
-          <View style={{ width: 60 }}>
-            <Button title="Edit" />
-          </View>
         </View>
-      );
-    });
-
-    return (
-      <ScrollView>
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          {courses}
-        </View>
-      </ScrollView>
+        <ScrollView>
+          <Card containerStyle={{ padding: 0 }}>
+            {this.props.courses.map((u, i) => {
+              return (
+                <ListItem
+                  key={u.id}
+                  leftAvatar={
+                    <View
+                      style={{
+                        backgroundColor: u.color,
+                        height: 30,
+                        width: 30,
+                        borderRadius: 15,
+                        padding: 7
+                      }}
+                    />
+                  }
+                  title={u.title}
+                  titleStyle={{ color: "black", fontWeight: "bold" }}
+                  subtitleStyle={{ color: "gray" }}
+                  subtitle="Vice Chairman"
+                  chevronColor="white"
+                  chevron
+                  onPress={() => {
+                    this.props.navigation.push("CourseEdit", {
+                      courseId: u.id,
+                      newCourse: false
+                    });
+                  }}
+                />
+              );
+            })}
+          </Card>
+        </ScrollView>
+      </View>
     );
   }
 }

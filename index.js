@@ -12,7 +12,6 @@ const store = configureStore();
 const RNRedux = () => (
    <Provider store={store}>
     <ThemeProvider>
-      <Button title="Amir is here" />
       <App />
     </ThemeProvider>
    </Provider>

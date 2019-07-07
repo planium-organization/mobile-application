@@ -22,6 +22,7 @@ import AnalysisScreen from "./src/screens/AnalysisScreen";
 import ChannelScreen from "./src/screens/ChannelScreen";
 import ProfileScreen from "./src/screens/profileScreen";
 import CourseViewScreen from "./src/screens/CourseViewScreen";
+import CourseEditScreen from "./src/screens/CourseEditScreen";
 
 import LoginScreen from "./src/screens/Auth/Login";
 import LoadingScreen from "./src/screens/Auth/Loading";
@@ -40,7 +41,8 @@ const TimeTableNavigator = createStackNavigator(
 
 const profileScreenNavigation = createStackNavigator({
   ProfileDetails: { screen: ProfileScreen },
-  CourseView: {screen: CourseViewScreen}
+  CourseView: { screen: CourseViewScreen },
+  CourseEdit: { screen: CourseEditScreen }
 });
 
 const AppTabNavigator = createBottomTabNavigator(
@@ -104,7 +106,7 @@ const AppMainSwitch = createSwitchNavigator(
     Auth: AppAuthNavigator
   },
   {
-    initialRouteName: "App"
+    initialRouteName: "LoadingScreen"
   }
 );
 
@@ -115,4 +117,3 @@ export default class App extends React.Component {
     return <AppContainer />;
   }
 }
-
