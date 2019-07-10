@@ -259,11 +259,11 @@ class CardEditScreen extends Component {
     })
       .then(response => {
         if (!response.ok) {
-          alert(`could not create new card on server: ${response.statusText}`);
+          // alert(`could not create new card on server: ${response.statusText}`);
         }
       })
       .catch(error => {
-        alert(error);
+        // alert(error);
       });
   }
 
@@ -290,15 +290,15 @@ class CardEditScreen extends Component {
     })
       .then(response => {
         if (!response.ok) {
-          alert(
-            `could not edit card ${selCard.key} on server: ${
-              response.statusText
-            }`
-          );
+          // alert(
+          //   `could not edit card ${selCard.key} on server: ${
+          //     response.statusText
+          //   }`
+          // );
         }
       })
       .catch(error => {
-        alert(error);
+        // alert(error);
       });
   }
 }

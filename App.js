@@ -106,11 +106,14 @@ const AppMainSwitch = createSwitchNavigator(
     Auth: AppAuthNavigator
   },
   {
-    initialRouteName: "LoadingScreen"
+    initialRouteName: "App"
   }
 );
 
 const AppContainer = createAppContainer(AppMainSwitch);
+
+
+console.disableYellowBox = true;
 
 export default class App extends React.Component {
   render() {
